@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './app.css';
+import './App.css';
 import Login from './Pages/Login';
 import MainLayout from './Pages/MainLayout';
 import { useGlobalContext } from './GlobalStates/GlobalState';
