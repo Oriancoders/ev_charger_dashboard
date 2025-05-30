@@ -1,0 +1,103 @@
+[
+    {
+      "serial": "SN03412",
+      "batteryIn": 80,
+      "batteryOut": 60,
+      "startTime": "2025-05-20T16:00:00",
+      "endTime": "2025-05-20T18:00:00",
+      "powerSupplied": 20,
+      "cost": 400,
+      "date": "2025-05-20"
+    },
+    {
+      "serial": "SN03413",
+      "batteryIn": 75,
+      "batteryOut": 55,
+      "startTime": "2025-05-19T15:00:00",
+      "endTime": "2025-05-19T17:00:00",
+      "powerSupplied": 18,
+      "cost": 360,
+      "date": "2025-05-19"
+    },
+    {
+      "serial": "SN03414",
+      "batteryIn": 90,
+      "batteryOut": 70,
+      "startTime": "2025-05-18T10:00:00",
+      "endTime": "2025-05-18T12:30:00",
+      "powerSupplied": 22,
+      "cost": 440,
+      "date": "2025-05-18"
+    },
+    {
+      "serial": "SN03415",
+      "batteryIn": 60,
+      "batteryOut": 40,
+      "startTime": "2025-05-17T14:00:00",
+      "endTime": "2025-05-17T16:00:00",
+      "powerSupplied": 15,
+      "cost": 300,
+      "date": "2025-05-17"
+    },
+    {
+      "serial": "SN03416",
+      "batteryIn": 70,
+      "batteryOut": 55,
+      "startTime": "2025-05-16T13:00:00",
+      "endTime": "2025-05-16T15:00:00",
+      "powerSupplied": 17,
+      "cost": 340,
+      "date": "2025-05-16"
+    },
+    {
+      "serial": "SN03417",
+      "batteryIn": 85,
+      "batteryOut": 65,
+      "startTime": "2025-05-15T09:00:00",
+      "endTime": "2025-05-15T11:00:00",
+      "powerSupplied": 21,
+      "cost": 420,
+      "date": "2025-05-15"
+    },
+    {
+      "serial": "SN03418",
+      "batteryIn": 78,
+      "batteryOut": 60,
+      "startTime": "2025-05-14T16:00:00",
+      "endTime": "2025-05-14T18:30:00",
+      "powerSupplied": 19,
+      "cost": 380,
+      "date": "2025-05-14"
+    },
+    {
+      "serial": "SN03419",
+      "batteryIn": 72,
+      "batteryOut": 52,
+      "startTime": "2025-05-13T11:00:00",
+      "endTime": "2025-05-13T13:00:00",
+      "powerSupplied": 16,
+      "cost": 320,
+      "date": "2025-05-13"
+    },
+    {
+      "serial": "SN03420",
+      "batteryIn": 90,
+      "batteryOut": 75,
+      "startTime": "2025-05-12T08:00:00",
+      "endTime": "2025-05-12T10:00:00",
+      "powerSupplied": 24,
+      "cost": 480,
+      "date": "2025-05-12"
+    },
+    {
+      "serial": "SN03421",
+      "batteryIn": 68,
+      "batteryOut": 50,
+      "startTime": "2025-05-11T17:00:00",
+      "endTime": "2025-05-11T19:00:00",
+      "powerSupplied": 15,
+      "cost": 300,
+      "date": "2025-05-11"
+    }
+  ]
+  

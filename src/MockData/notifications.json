@@ -1,0 +1,78 @@
+[
+    {
+      "type": "Warning",
+      "message": "Charger overheating",
+      "timestamp": "2025-05-29T03:00:00"
+    },
+    {
+      "type": "Error",
+      "message": "Power supply turned off due to overheating",
+      "timestamp": "2025-05-29T03:04:00"
+    },
+    {
+      "type": "Session Started",
+      "message": "New device connected (session Cn23124)",
+      "timestamp": "2025-05-29T05:44:00"
+    },
+    {
+      "type": "Battery",
+      "message": "Charging below 20% Can’t start a new session",
+      "timestamp": "2025-05-29T05:54:00"
+    },
+    {
+      "type": "Error",
+      "message": "Power supply turned off due to low battery",
+      "timestamp": "2025-05-29T07:04:00"
+    },
+    {
+      "type": "Warning",
+      "message": "Socket temperature exceeded limit",
+      "timestamp": "2025-05-28T10:45:00"
+    },
+    {
+      "type": "Battery",
+      "message": "Battery temperature too low to begin charging",
+      "timestamp": "2025-05-28T11:00:00"
+    },
+    {
+      "type": "Session Started",
+      "message": "Charging started for session CN55487",
+      "timestamp": "2025-05-28T12:30:00"
+    },
+    {
+      "type": "Error",
+      "message": "Charger disconnected unexpectedly",
+      "timestamp": "2025-05-28T14:20:00"
+    },
+    {
+      "type": "Battery",
+      "message": "Battery charged to 80%",
+      "timestamp": "2025-05-28T15:00:00"
+    },
+    {
+      "type": "Session Started",
+      "message": "Session Cn99887 initiated",
+      "timestamp": "2025-05-27T08:12:00"
+    },
+    {
+      "type": "Warning",
+      "message": "Voltage fluctuation detected",
+      "timestamp": "2025-05-27T08:20:00"
+    },
+    {
+      "type": "Error",
+      "message": "Charger fault – replace unit",
+      "timestamp": "2025-05-27T09:10:00"
+    },
+    {
+      "type": "Battery",
+      "message": "Charging completed successfully",
+      "timestamp": "2025-05-27T09:45:00"
+    },
+    {
+      "type": "Session Started",
+      "message": "Vehicle authenticated and charging begun",
+      "timestamp": "2025-05-27T10:00:00"
+    }
+  ]
+  

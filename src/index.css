@@ -1,0 +1,75 @@
+@import "tailwindcss";
+
+@tailwind utilities;
+
+/* 👇 Custom Fonts */
+@layer base {
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
+
+  html {
+    font-family: 'Montserrat', sans-serif;
+  }
+
+  .font-montserrat {
+    font-family: 'Montserrat', sans-serif;
+  }
+}
+
+/* 👇 Custom Animations */
+@layer utilities {
+  @keyframes fade-in {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+
+  @keyframes fade-up {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fade-down {
+    0% { opacity: 0; transform: translateY(-20px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fade-left {
+    0% { opacity: 0; transform: translateX(-20px); }
+    100% { opacity: 1; transform: translateX(0); }
+  }
+
+  @keyframes fade-right {
+    0% { opacity: 0; transform: translateX(20px); }
+    100% { opacity: 1; transform: translateX(0); }
+  }
+
+  @keyframes blink {
+    0%, 100% { color: white; }
+    50% { color: #00DDFF; }
+  }
+
+  .animate-fade-in { animation: fade-in 0.8s ease-out; }
+  .animate-fade-up { animation: fade-up 0.8s ease-in-out; }
+  .animate-fade-down { animation: fade-down 0.8s ease-out; }
+  .animate-fade-left { animation: fade-left 0.8s ease-out; }
+  .animate-fade-right { animation: fade-right 0.8s ease-out; }
+  .animate-blink { animation: blink 0.7s infinite; }
+}
+
+/* 👇 Custom Colors (Optional fallback in case Tailwind doesn't generate them) */
+@layer utilities {
+  .text-mainText { color: #1E1E2F; }
+  .mainBlue { color: #0A86F0; }
+  .bg-fromBlue { background-color: #0A86F0; }
+  .bg-toBlue { background-color: #3870AB; }
+  .bg-fromGreen { background-color: #7AFF55; }
+  .bg-toGreen { background-color: #00AA06; }
+  .bg-bgColor { background-color: #F4F6F8; }
+  .text-alertGreen { color: #C1F9AA; }
+  .text-alertRed { color: #F4BFBF; }
+  .text-grayText { color: #AFAFAF; }
+  .text-redText { color: #FF1717; }
+  .text-greenText { color: #7AFF55; }
+}
+
+
+
