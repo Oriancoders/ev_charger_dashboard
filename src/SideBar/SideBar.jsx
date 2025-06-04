@@ -10,6 +10,7 @@ import {
   FaSignOutAlt,
 } from "react-icons/fa";
 import { useGlobalContext } from "../GlobalStates/GlobalState";
+import { useNavigate } from "react-router-dom";
 
 const menuItems = [
   { label: "Main Dashboard", icon: <FaTachometerAlt /> },
@@ -23,6 +24,13 @@ const menuItems = [
 
 const Sidebar = () => {
  const {activeItem, setActiveItem  , setIsLoggedIn} = useGlobalContext()
+ const navigate = useNavigate()
+
+ const logout = () => {
+    setIsLoggedIn(false)
+    navigate("/");
+    
+ }
 
   return (
     <div className="w-64 h-screen   bg-[#F4F6F8] shadow-md flex flex-col justify-between ">
@@ -43,7 +51,7 @@ const Sidebar = () => {
         </nav>
       </div>
 
-      <button onClick={() => setIsLoggedIn(false)} className="m-4 justify-between flex items-center gap-2 bg-[#1E1E2F] text-white px-4 py-2 rounded-lg shadow hover:opacity-90 cursor-pointer">
+      <button onClick={() => logout()} className="m-4 justify-between flex items-center gap-2 bg-[#1E1E2F] text-white px-4 py-2 rounded-lg shadow hover:opacity-90 cursor-pointer">
       Logout <FaSignOutAlt />
       </button>
     </div>

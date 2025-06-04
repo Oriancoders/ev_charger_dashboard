@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useGlobalContext } from "../GlobalStates/GlobalState";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const { isLoggedIn, setIsLoggedIn } = useGlobalContext();
@@ -8,11 +9,13 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleLogin = () => {
     if (email === "sami@gmail.com" && password === "12345") {
       setIsLoggedIn(true);
-      console.log("logged in hogaya", isLoggedIn);
+      alert("Login successful!");
+      navigate("/main-dashboard");
     } else {
       setError("Incorrect email or password.");
     }
