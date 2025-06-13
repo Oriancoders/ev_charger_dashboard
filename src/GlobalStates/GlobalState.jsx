@@ -17,6 +17,8 @@ export const GlobalProvider = ({ children }) => {
     const [activeItem, setActiveItem] = useState("Main Dashboard")
     const [isOn, setIsOn] = useState(true);
     const [isLoggedIn , setIsLoggedIn] = useState(false)
+    const [authType , setAuthType] = useState("Login")
+    const [isAuthenticated ,setIsAuthenticated] = useState(false)
 
 
 
@@ -51,7 +53,9 @@ export const GlobalProvider = ({ children }) => {
             activeItem, setActiveItem,
             isOn, setIsOn,
             mockLiveData,
-            isLoggedIn , setIsLoggedIn
+            isLoggedIn , setIsLoggedIn,
+            authType , setAuthType,
+            isAuthenticated ,setIsAuthenticated
 
             }}>
             {children}

@@ -18,7 +18,7 @@ const ChargerControlPanel = () => {
   };
 
   return (
-    <div className="p-6 bg-white rounded-xl shadow-lg space-y-6">
+    <div className="sm:p-6 p-3 bg-white rounded-xl shadow-lg space-y-6">
         <h2 className="text-3xl font-bold text-[#1E1E2F] mb-4 	italic">Charger Control Panel</h2>
 
         {/* Capsule Switch */}

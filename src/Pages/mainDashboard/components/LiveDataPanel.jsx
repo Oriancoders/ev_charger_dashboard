@@ -18,10 +18,10 @@ import {
   
     return (
       <div className="bg-white p-6 rounded-xl shadow-md">
-        <h2 className="text-3xl font-bold text-[#1E1E2F] mb-4">
-          <i>Current Live Data Supply</i>
+        <h2 className="sm:text-3xl text-xl font-bold text-[#1E1E2F] mb-4 italic">
+          Current Live Data Supply
         </h2>
-        <div className="grid grid-cols-6 gap-4">
+        <div className="grid xl:grid-cols-6 md:grid-cols-3 grid-cols-2 gap-4">
           <LiveCard
             label="Voltage"
             value={`${safeData.voltage}V`}

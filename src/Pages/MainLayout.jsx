@@ -7,17 +7,23 @@ import ChargerControlPanel from "./control/ChargerControlPanel";
 import RecentSession from "./RecentSession/RecentSession";
 import History from "./History/History";
 import Notifications from "./Notifcations/Notifications";
+import { RxDoubleArrowLeft } from "react-icons/rx";
+
 
 const MainLayout = () => {
-    const { activeItem } = useGlobalContext()
+    const { activeItem, scrwidth } = useGlobalContext()
+    const [isSideBarOpen , setIsSideBarOpen] = useState(false)
 
     useEffect(() => {
-        
-    console.log("item is " ,activeItem)
-    } , [])
+
+        console.log("item is ", activeItem)
+    }, [])
     return (
         <div className="flex overflow-hidden">
-            <Sidebar />
+
+
+                <Sidebar />
+
             <main className="flex-1  bg-[#F4F6F8] min-h-screen overflow-auto">
                 {activeItem == "Main Dashboard" && (
                     <MainDashboard />

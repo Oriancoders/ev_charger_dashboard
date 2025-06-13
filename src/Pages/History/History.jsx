@@ -41,11 +41,11 @@ const History = () => {
 
   return (
     <div className="p-6 bg-[#F4F6F8] h-screen overflow-y-scroll">
-      <h2 className="text-2xl font-bold mb-4 text-[#1E1E2F] italic">History</h2>
+      <h2 className="sm:text-3xl text-xl font-bold mb-4 text-[#1E1E2F] italic">History</h2>
 
       {/* Filter bar */}
-      <div className="bg-white shadow rounded-2xl p-4 flex flex-wrap justify-between items-center gap-4 mb-4">
-        <div className="text-lg font-semibold">Filters</div>
+      <div className="bg-white shadow rounded-2xl p-4 flex sm:flex-row flex-col flex-wrap justify-between sm:items-center gap-4 mb-4">
+        <h1 className="sm:text-lg text-sm font-semibold">Filters</h1>
         <div>
           <label className="mr-2 font-medium">From Date:</label>
           <input
@@ -75,26 +75,26 @@ const History = () => {
       </div>
 
       {/* Search */}
-      <div className="bg-white shadow rounded p-2 flex items-center mb-4">
+      <div className="bg-white shadow sm:text-lg text-sm rounded p-2 flex items-center mb-4">
         <input
           type="text"
           placeholder="Search By Session Id"
           value={searchTerm}
           onChange={e => setSearchTerm(e.target.value)}
-          className="flex-1 px-3 py-2 border rounded"
+          className="flex-1 px-3 py-2 focus:border-blue-700 border-[1px] border-transparent  rounded outline-none"
         />
       </div>
 
       {/* Table */}
       <div className=" bg-white ">
         <table className="w-full table-auto ">
-          <thead className="bg-gray-200">
+          <thead className="bg-gray-200 sm:text-lg text-xs">
             <tr>
-              <th className="p-2 border-2 border-gray-400">Date</th>
-              <th className="p-2 border-2 border-gray-400">Vehicle (Session ID)</th>
-              <th className="p-2 border-2 border-gray-400">Energy (Kwh)</th>
-              <th className="p-2 border-2 border-gray-400">Earnings (PKR)</th>
-              <th className="p-2 border-2 border-gray-400">Time Taken</th>
+              <th className="p-2 border-[1px] border-gray-400">Date</th>
+              <th className="p-2 border-[1px] border-gray-400">Vehicle (Session ID)</th>
+              <th className="p-2 border-[1px] border-gray-400">Energy (Kwh)</th>
+              <th className="p-2 border-[1px] border-gray-400">Earnings (PKR)</th>
+              <th className="p-2 border-[1px] border-gray-400">Time Taken</th>
             </tr>
           </thead>
           <tbody>
@@ -106,12 +106,12 @@ const History = () => {
               const min = Math.floor(diffMinutes % 60);
 
               return (
-                <tr key={index} className=" text-xl  ">
-                  <td className="p-2 border-2 border-gray-300">{format(parseISO(session.date), 'dd/MM/yyyy')}</td>
-                  <td className="p-2 border-2 border-gray-300">{session.serial}</td>
-                  <td className="p-2 border-2 border-gray-300">{session.powerSupplied}</td>
-                  <td className="p-2 border-2 border-gray-300">{session.cost}</td>
-                  <td className="p-2 border-2 border-gray-300">{`${hr}hr ${min}min`}</td>
+                <tr key={index} className=" sm:text-xl text-xs ">
+                  <td className="p-2 border-[1px] border-gray-300">{format(parseISO(session.date), 'dd/MM/yyyy')}</td>
+                  <td className="p-2 border-[1px] border-gray-300">{session.serial}</td>
+                  <td className="p-2 border-[1px] border-gray-300">{session.powerSupplied}</td>
+                  <td className="p-2 border-[1px] border-gray-300">{session.cost}</td>
+                  <td className="p-2 border-[1px] border-gray-300">{`${hr}hr ${min}min`}</td>
                 </tr>
               );
             })}
@@ -129,8 +129,8 @@ const History = () => {
 
 const SummaryCard = ({ title, value }) => (
   <div className="bg-white  shadow p-4 flex flex-col justify-between rounded-2xl gap-y-4">
-    <div className="text-2xl font-bold italic">{title}</div>
-    <div className="text-xl font-bold text-blue-600">{value}</div>
+    <div className="sm:text-2xl text-sm font-bold italic">{title}</div>
+    <div className="sm:text-xl text-xs font-bold text-blue-600">{value}</div>
   </div>
 );
 

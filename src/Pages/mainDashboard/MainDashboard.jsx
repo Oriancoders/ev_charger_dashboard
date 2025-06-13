@@ -24,8 +24,8 @@ const MainDashboard = () => {
 
   return (
 
-      <main className=" p-6 bg-[#F4F6F8] h-screen overflow-y-scroll">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <main className=" sm:p-6 p-3 bg-[#F4F6F8] h-screen overflow-y-scroll">
+        <div className="grid  lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
           <BatteryCard level={mockData.battery} />
           {/* <InfoCard title="Current" value={`${mockData.current}A`} icon="A" /> */}
           <InfoCard title="Power" value={`${mockData.power}kW`} icon="⚡" />

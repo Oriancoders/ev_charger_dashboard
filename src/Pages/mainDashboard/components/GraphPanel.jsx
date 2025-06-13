@@ -17,8 +17,8 @@ import {
     }));
   
     return (
-      <div className="bg-white p-6 rounded-xl shadow-md">
-        <h2 className="text-3xl font-bold text-[#1E1E2F] mb-4"><i>Graphical Representation</i></h2>
+      <div className="bg-white sm:p-6 p-3 rounded-xl shadow-md">
+        <h2 className="sm:text-3xl text-xl font-bold text-[#1E1E2F] mb-4">Graphical Representation</h2>
         <ResponsiveContainer width="100%" height={300}>
           <LineChart data={processedData}>
             <CartesianGrid strokeDasharray="3 3" />

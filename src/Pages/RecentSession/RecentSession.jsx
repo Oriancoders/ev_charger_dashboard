@@ -5,8 +5,8 @@ const RecentSession = () => {
   const session = sessions[4]; // latest session at top
 
   return (
-    <div className="p-6 bg-[#F4F6F8] h-screen overflow-y-scroll">
-      <h2 className="text-2xl font-bold mb-4 text-[#1E1E2F]">Most Recent Charge</h2>
+    <div className="sm:p-6 p-3 bg-[#F4F6F8] h-screen overflow-y-scroll">
+      <h2 className="sm:text-3xl text-xl font-bold mb-4 text-[#1E1E2F] italic">Most Recent Charge</h2>
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
 
         {/* Battery when plugged in */}
@@ -51,15 +51,15 @@ const RecentSession = () => {
 
 const InfoBox = ({ label, value, sub, color = "text-black", children }) => (
   <div className="bg-white p-4 rounded-lg shadow flex flex-col  justify-between gap-y-3">
-    <p className="text-2xl font-bold italic">{label}</p>
-    <p className={`text-xl font-bold ${color}`}>{value}</p>
+    <p className="sm:text-2xl text-sm font-bold italic">{label}</p>
+    <p className={`sm:text-xl text-sm font-bold ${color}`}>{value}</p>
     {sub && <p className="text-xs text-gray-400">{sub}</p>}
     {children}
   </div>
 );
 
 const ProgressBar = ({ percentage, color }) => (
-  <div className="w-full h-2 bg-gray-200 rounded mt-2">
+  <div className="w-full sm:h-2 h-0.5 bg-gray-200 rounded mt-2">
     <div
       className={`h-2 rounded ${color}`}
       style={{ width: `${percentage}%` }}
