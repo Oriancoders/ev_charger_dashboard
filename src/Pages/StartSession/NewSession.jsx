@@ -68,16 +68,16 @@ const NewSession = () => {
     return (
         <div className="sm:p-6 p-3 bg-[#F4F6F8] h-screen overflow-y-scroll">
             <div className="w-full flex justify-between items-center  font-bold mb-3  px-3">
-                <FaPlus className="text-4xl" />
-                <h2 className="text-[24px] font-bold  text-[#1E1E2F] italic">Activate Session</h2>
+                <FaPlus className="sm:text-4xl text-xl" />
+                <h2 className="sm:text-[24px] text-lg font-bold  text-[#1E1E2F] italic">Activate Session</h2>
 
                 <h1 className="bg-[#1E1E2F] rounded-sm px-3 py-2 text-white">USER NAME</h1>
             </div>
             {!sessionStarted && !sessionEnded && (
-                <form className=" p-4  ">
+                <form className=" p-3 w-full ">
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div className="flex flex-col gap-y-2">
+                    <div className="grid sm:grid-cols-2 grid-cols-1 w-full  gap-4 ">
+                        <div className="flex flex-col gap-y-2 col-span-1 ">
                             <label className='text-xl italic font-semibold' >Session Name</label>
                             <input
                                 type="text"
@@ -88,7 +88,7 @@ const NewSession = () => {
                             />
                         </div>
 
-                        <div className="flex flex-col gap-y-2">
+                        <div className="flex flex-col gap-y-2 col-span-1">
                             <label className='text-xl italic font-semibold' >Vehicle Name</label>
                             <input
                                 type="text"
@@ -99,7 +99,7 @@ const NewSession = () => {
                             />
                         </div>
 
-                        <div className="flex flex-col gap-y-2">
+                        <div className="flex flex-col gap-y-2 col-span-1">
                             <label className='text-xl italic font-semibold' >Port Type</label>
                             <select
                                 value={portType}
@@ -112,7 +112,7 @@ const NewSession = () => {
                             </select>
                         </div>
 
-                        <div className="flex flex-col gap-y-2">
+                        <div className="flex flex-col gap-y-2 col-span-1">
                             <label className='text-xl italic font-semibold' >Max Budget <span className='text-black/20 text-xs'>(Session will automatically stop when budget reached)</span></label>
                             <input
                                 type="number"
@@ -123,7 +123,7 @@ const NewSession = () => {
                             />
                         </div>
 
-                        <div className="flex flex-col gap-y-2 col-span-2">
+                        <div className="flex flex-col gap-y-2 col-span-1">
                             <label className='text-xl italic font-semibold' >Payment Method</label>
                             <select
                                 value={paymentMethod}
