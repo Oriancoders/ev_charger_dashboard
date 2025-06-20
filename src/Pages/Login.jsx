@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useGlobalContext } from "../GlobalStates/GlobalState";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion"
 import { IoIosEye, IoIosEyeOff } from "react-icons/io";
@@ -28,7 +27,6 @@ const Login = () => {
         return;
       }
 
-      // const user = users.find(u => u.username === username && u.password === password);
       let user = false;
       if (username == "dev_sami" && password == "123") {
         user = true;

@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FaBell, FaBatteryHalf, FaExclamationTriangle, FaTimesCircle, FaExchangeAlt } from "react-icons/fa";
 import { format } from "date-fns";
 import notifications from "../../MockData/notifications.json";
+import { useGlobalContext } from "../../GlobalStates/GlobalState";
 
 
 const iconMap = {
@@ -13,21 +14,29 @@ const iconMap = {
 
 const Notifications = () => {
 
+    const {ROLE} = useGlobalContext()
     
     return (
         <div className="sm:p-6 p-3 bg-[#F4F6F8] h-screen overflow-y-scroll">
-            <h2 className="sm:text-2xl text-xl font-semibold italic mb-4">Notifications</h2>
+            
+                    <div className="w-full flex justify-between items-center  font-bold mb-3  px-3">
+                      <FaBell className="text-4xl" />
+                      <h2 className="text-[24px] font-bold  text-[#1E1E2F] italic">Notifications</h2>
+            
+                      <h1 className="bg-[#1E1E2F] rounded-sm px-3 py-2 text-white">{ROLE == "ADMIN" ? "ADMIN" : "USERNAME" }</h1>
+                    </div>
+                 
             <div className="space-y-4">
                 {notifications.map((notification, idx) => (
                     <div
                         key={idx}
-                        className="flex sm:text-lg text-sm justify-between gap-6 items-center bg-white shadow-md rounded-xl px-4 py-3 "
+                        className="flex  text-lg justify-between gap-6 items-center bg-white shadow-md rounded-xl px-4 py-2 "
                     >
                         <div className="sm:w-40 w-20 italic font-semibold flex items-center justify-between gap-2  ">
                         <h1 className="">{notification.type}</h1> 
-                        <span>{iconMap[notification.type]}</span> 
+                        {iconMap[notification.type]}
                         </div>
-                        <h1 className="flex-1 ">
+                        <h1 className="flex-1 text-sm">
                             {notification.message}
                         </h1>
                         <div className="text-right  whitespace-nowrap">

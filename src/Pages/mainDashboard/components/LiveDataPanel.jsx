@@ -18,7 +18,7 @@ import {
   
     return (
       <div className="bg-white p-6 rounded-xl shadow-md">
-        <h2 className="sm:text-3xl text-xl font-bold text-[#1E1E2F] mb-4 italic">
+        <h2 className="text-[24px] font-bold text-[#1E1E2F] mb-4 italic">
           Current Live Data Supply
         </h2>
         <div className="grid xl:grid-cols-6 md:grid-cols-3 grid-cols-2 gap-4">
@@ -71,10 +71,10 @@ import {
     <div className={`p-4 group rounded-xl shadow ${bg}`}>
       <div className="flex  items-center flex-col text-center gap-y-3">
         <span className={`text-2xl mainBlue bg-[#AFAFAF]/20 p-2 rounded-full fromBlue ${text}`}>{icon}</span>
-        <p className="text-sm text-[#AFAFAF]">
-          <i>{label}</i>
+        <p className="text-lg text-[#5a5a5a] italic">
+          {label}
         </p>
-        <h4 className={`text-lg font-semibold ${text}`}> <i>{value}</i> </h4>
+        <h4 className={`text-[16px] font-semibold ${text}`}> <i>{value}</i> </h4>
       </div>
     </div>
   );

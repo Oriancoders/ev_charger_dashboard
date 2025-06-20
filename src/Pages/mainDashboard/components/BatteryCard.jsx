@@ -7,8 +7,8 @@ const BatteryCard = ({ level }) => {
     <div className="bg-white p-4 rounded-xl shadow-md">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="sm:text-3xl text-xl font-bold  text-[#1E1E2F] italic">Battery</h1>
-          <p className="text-sm text-[#AFAFAF]">Battery of the charger</p>
+          <h1 className="text-[24px] font-bold  text-[#1E1E2F] italic">Battery</h1>
+          <p className="text-lg text-[#AFAFAF]">Battery of the charger</p>
         </div>
         <FaBatteryThreeQuarters className="text-green-500 text-2xl" />
       </div>

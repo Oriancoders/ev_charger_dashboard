@@ -19,7 +19,16 @@ export const GlobalProvider = ({ children }) => {
     const [isLoggedIn , setIsLoggedIn] = useState(false)
     const [authType , setAuthType] = useState("Login")
     const [isAuthenticated ,setIsAuthenticated] = useState(false)
+    const [ROLE , setROLE] = useState("USER")
 
+    const formatTime = (totalSeconds) => {
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    const padded = (num) => num.toString().padStart(2, '0');
+    return `${hours}:${padded(minutes)}:${padded(seconds)}`;
+    };
 
 
   
@@ -55,7 +64,9 @@ export const GlobalProvider = ({ children }) => {
             mockLiveData,
             isLoggedIn , setIsLoggedIn,
             authType , setAuthType,
-            isAuthenticated ,setIsAuthenticated
+            isAuthenticated ,setIsAuthenticated,
+            ROLE , setROLE,
+            formatTime
 
             }}>
             {children}
