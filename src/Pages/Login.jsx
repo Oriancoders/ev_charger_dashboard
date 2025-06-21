@@ -4,6 +4,8 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion"
 import { IoIosEye, IoIosEyeOff } from "react-icons/io";
+import ApiService from "../ApiServices/ApiService";
+
 
 
 const Login = () => {
@@ -12,15 +14,15 @@ const Login = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleAuthentication = (e) => {
+  const handleAuthentication = async (e) => {
     e.preventDefault();
 
     const form = e.target;
     if (authType === "Login") {
-      const username = form.usernameLogin.value.trim();
+      const email = form.emailLogin.value.trim();
       const password = form.passwordLogin.value;
 
-      if (!username || !password) {
+      if (!email || !password) {
         setError("Please fill in all fields");
         setTimeout(() => {
           setError(null)
@@ -28,31 +30,51 @@ const Login = () => {
         return;
       }
 
-      // const user = users.find(u => u.username === username && u.password === password);
-      let user = false;
-      if (username == "dev_sami" && password == "123") {
-        user = true;
-      }
+      try {
+        console.log(email,password);
+            const response = await ApiService.loginUser({ email, password });
+            console.log(response);
+            if (response.statusCode == 200) {
+                alert("Login Successful!");
+                localStorage.setItem('token', response.token);
+                localStorage.setItem('role', response.role);
+                localStorage.setItem('email',response.email);
+                localStorage.setItem('username',response.username);
+                localStorage.setItem('id',response.id);
+                // navigate(from, { replace: true });
+                console.log(response);
+            }
+        } catch (error) {
+          console.log("asds111");
+            if(error.response && error.response.status === 401){
+            alert("Invalid email and password!");
+            }
+            else{
+                alert("Network Error");
+            }
+            setTimeout(() => setError(''), 5000);
+        }
+      
 
-      if (user) {
-        alert("Login successful!");
-        // localStorage.setItem('currUser' , JSON.stringify(user))
-        localStorage.setItem('isAuthenticated', true)
-        setIsAuthenticated(localStorage.getItem("isAuthenticated"))
-        navigate("/main-dashboard")
-      } else {
-        setError("Invalid Username or Password");
-        setTimeout(() => {
-          setError(null)
-        }, 5000)
-      }
+      // if (user) {
+      //   alert("Login successful!");
+      //   // localStorage.setItem('currUser' , JSON.stringify(user))
+      //   localStorage.setItem('isAuthenticated', true)
+      //   setIsAuthenticated(localStorage.getItem("isAuthenticated"))
+      //   navigate("/main-dashboard")
+      // } else {
+      //   setError("Invalid email or Password");
+      //   setTimeout(() => {
+      //     setError(null)
+      //   }, 5000)
+      // }
 
     } else {
-      const username = form.usernameSignup.value.trim();
       const email = form.emailSignup.value.trim();
+      // const email = form.emailSignup.value.trim();
       const password = form.passwordSignup.value;
 
-      if (!username || !email || !password) {
+      if (!email || !email || !password) {
         setError("Please fill all input fields")
         setTimeout(() => {
           setError(null)
@@ -60,10 +82,10 @@ const Login = () => {
         return;
       }
 
-      // const alreadyExists = users.find(u => u.username === username);
+      // const alreadyExists = users.find(u => u.email === email);
 
       // if (alreadyExists) {
-      //     setError("username already exisits .. usedifferent one");
+      //     setError("email already exisits .. usedifferent one");
       //     setTimeout(() => {
       //         setError(null)
       //     }, 5000)
@@ -75,7 +97,7 @@ const Login = () => {
         }, 5000)
         const newUser = {
           userId: "u" + (users.length + 1),
-          username: username.trim(),
+          email: email.trim(),
           email: email.trim(),
           password: password.trim(),
           files: [],
@@ -87,14 +109,9 @@ const Login = () => {
     }
   };
 
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter") handleLogin();
-  };
+  
 
-  useEffect(() => {
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#c3dafe] to-[#ebf4ff] animate-fadeIn">
@@ -145,7 +162,7 @@ const Login = () => {
             >
               <input
                 type='text'
-                name="usernameLogin"
+                name="emailLogin"
                 className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200'
                 placeholder='User Name'
                 maxLength={20}
@@ -186,7 +203,7 @@ const Login = () => {
                 className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200'
                 placeholder='User Name'
                 maxLength={20}
-                name="usernameSignup"
+                name="emailSignup"
               />
               <input
                 type='email'
