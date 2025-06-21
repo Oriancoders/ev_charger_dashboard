@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import html2canvas from 'html2canvas';
 
 import {
     FaBolt,
@@ -64,6 +65,19 @@ const NewSession = () => {
         setSessionEnded(true);
         setSessionStarted(false);
     };
+
+    const handleScreenshotDownload = async () => {
+        const element = document.getElementById("billing-summary");
+
+        if (!element) return;
+    console.log("element is : " , element.innerHTML)
+        const canvas = await html2canvas(element);
+        const link = document.createElement("a");
+        link.download = "charging_session_summary.png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+    };
+
 
     return (
         <div className="sm:p-6 p-3 bg-[#F4F6F8] h-screen overflow-y-scroll">
@@ -204,11 +218,31 @@ const NewSession = () => {
             )}
 
             {sessionEnded && (
-                <div className="bg-white p-6 rounded shadow max-w-xl mx-auto text-center">
-                    <h2 className="text-xl font-semibold text-green-700">✅ Session Ended Successfully</h2>
-                    <p className="mt-2 text-gray-600">Billing details will appear here once UI is completed.</p>
+                <div id="billing-summary" className="p-4 bg-white rounded-lg shadow-md border w-full max-w-2xl mx-auto mt-6">
+                    <h2 className="text-2xl font-bold text-green-700 mb-2">✅ Session Ended Successfully</h2>
+                    <p className="text-gray-600 mb-4">Here are the billing details for your charging session.</p>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-gray-700">
+                        <div><strong>User:</strong> Default User</div>
+                        <div><strong>Session Name:</strong> {sessionName}</div>
+                        <div><strong>Vehicle Name:</strong> {vehicleName}</div>
+                        <div><strong>Port Type:</strong> {portType}</div>
+                        <div><strong>Max Budget:</strong> {maxBudget} PKR</div>
+                        <div><strong>Energy Consumed:</strong> {energy} kWh</div>
+                        <div><strong>Temperature:</strong> {temperature}°C</div>
+                        <div><strong>Time Taken:</strong> {formatTime(time)}</div>
+                        <div><strong>Total Cost:</strong> {cost} PKR</div>
+                    </div>
+
+                    <button
+                        onClick={handleScreenshotDownload}
+                        className="mt-6 px-5 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded w-full"
+                    >
+                        📥 Pay Now & Download Invoice
+                    </button>
                 </div>
             )}
+
         </div>
     );
 };
