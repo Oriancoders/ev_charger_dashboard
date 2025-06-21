@@ -39,7 +39,7 @@ const Login = () => {
                 localStorage.setItem('role', response.role);
                 localStorage.setItem('email',response.email);
                 localStorage.setItem('username',response.username);
-                localStorage.setItem('id',response.id);
+                localStorage.setItem('isAuthenticated' , true)
                 // navigate(from, { replace: true });
                 console.log(response);
             }
