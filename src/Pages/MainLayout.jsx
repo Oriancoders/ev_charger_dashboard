@@ -8,7 +8,7 @@ import RecentSession from "./RecentSession/RecentSession";
 import History from "./History/History";
 import Notifications from "./Notifcations/Notifications";
 import { RxDoubleArrowLeft } from "react-icons/rx";
-
+import NewSession from "./StartSession/NewSession";
 
 const MainLayout = () => {
     const { activeItem, scrwidth } = useGlobalContext()
@@ -43,6 +43,10 @@ const MainLayout = () => {
 
                 {activeItem == "Notifications" && (
                     <Notifications />
+                )}
+
+                {activeItem == "Start Session" && (
+                    <NewSession />
                 )}
             </main>
         </div>

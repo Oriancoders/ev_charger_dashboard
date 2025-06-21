@@ -8,6 +8,7 @@ import {
   FaHistory,
   FaBell,
   FaSignOutAlt,
+  FaPlus,
 } from "react-icons/fa";
 import { useGlobalContext } from "../GlobalStates/GlobalState";
 import { useNavigate } from "react-router-dom";
@@ -19,6 +20,7 @@ const menuItems = [
   { label: "Recent Session", icon: <FaClock /> },
   { label: "History", icon: <FaHistory /> },
   { label: "Notifications", icon: <FaBell /> },
+  { label: "Start Session" , icon: <FaPlus/>}
 ];
 
 ;
