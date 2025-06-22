@@ -18,7 +18,7 @@ export const GlobalProvider = ({ children }) => {
     const [isOn, setIsOn] = useState(true);
     const [isLoggedIn , setIsLoggedIn] = useState(false)
     const [authType , setAuthType] = useState("Login")
-    const [isAuthenticated ,setIsAuthenticated] = useState(false)
+    const [isAuthenticated ,setIsAuthenticated] = useState(true)
     const [ROLE , setROLE] = useState("USER")
 
     const formatTime = (totalSeconds) => {
