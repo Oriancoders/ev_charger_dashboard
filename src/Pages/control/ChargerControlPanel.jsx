@@ -19,7 +19,7 @@ const ChargerControlPanel = () => {
   };
 
   return (
-    <div className="sm:p-6 p-3  rounded-xl shadow-lg space-y-6  min-h-screen">
+    <div className="sm:p-6 p-3  rounded-xl shadow-lg space-y-6  h-screen overflow-y-scroll">
 
       <div className="w-full flex justify-between items-center  font-bold mb-3  px-3">
         <FaBolt className="text-4xl" />
@@ -27,7 +27,8 @@ const ChargerControlPanel = () => {
         <h1 className="bg-[#1E1E2F] rounded-sm px-3 py-2 text-white">ADMIN</h1>
       </div>
 
-      <h2 className="text-[24px] font-bold text-[#1E1E2F] mb-4 italic">Charger Control Panel</h2>
+      <div className="w-full flex justify-between items-end mt-8 px-2">
+        <h2 className="text-[24px] font-bold text-[#1E1E2F] italic">Station #1</h2>
 
       {/* Capsule Switch */}
       <div
@@ -40,15 +41,26 @@ const ChargerControlPanel = () => {
             }`}
         />
       </div>
+      </div>
 
 
       {/* Live Data Display */}
       <LiveDataPanel data={mockLiveData} isOn={isOn} />
 
       {/* Recommendations */}
-      <div className="mt-4 p-4 bg-[#f9f9f9] rounded-lg border border-gray-200">
-        <h1 className="font-semibold text-gray-800 mb-2 text-[18px]">Recommendations</h1>
-        <p className="text-[16px] text-gray-600 italic">{getRecommendation()}</p>
+      <div className="mt-4 p-4 bg-white shadow-md rounded-lg border border-gray-200">
+        <h1 className="text-[18px] font-bold">Station Details</h1>
+            <ul className="text-[14px] mb-4">
+              <li><strong>Device ID : </strong> 21312313</li>
+              <li><strong>Name Of Station : </strong> EV Charger Station 1</li>
+              <li><strong>Location : </strong> hyderabad ka grage</li>
+              <li><strong>Status : </strong> Active</li>
+              <li><strong>Last Updated : </strong> 24 may 2027 </li>
+
+            </ul>
+            <hr />
+        <h1 className="font-semibold   text-[18px] mt-4">Recommendations</h1>
+        <p className="text-[14px] text-gray-600 italic">{getRecommendation()}</p>
       </div>
     </div>
   );
