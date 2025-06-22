@@ -8,7 +8,7 @@ import ApiService from "../ApiServices/ApiService";
 
 
 const Login = () => {
-  const { authType, setAuthType, isAuthenticated, setIsAuthenticated } = useGlobalContext();
+  const { authType, setAuthType, isAuthenticated, setIsAuthenticated, authData, setAuthData } = useGlobalContext();
   const [isPass, setIsPass] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -30,24 +30,32 @@ const Login = () => {
       }
 
       try {
-            const response = await ApiService.loginUser({ email, password });
-            console.log(response);
-            if (response.statusCodeValue === 200) {
-                alert("Login Successful!");
-                setIsAuthenticated(true);
-                localStorage.setItem('token', response.body.accessToken); 
-                navigate("/main-dashboard");
-            }
-        } catch (error) {
-          console.log("asds111");
-            if(error.response && error.response.status === 401){
-            alert("Invalid email and password!");
-            }
-            else{
-                alert("Network Error");
-            }
-            setTimeout(() => setError(''), 5000);
+        const response = await ApiService.loginUser({ email, password });
+        if (response.statusCodeValue === 200) {
+          alert("Login Successful!");
+          setIsAuthenticated(true);
+
+          // Update authData state
+          setAuthData({
+            id: response.body.id,
+            username: response.body.username,
+            email: response.body.email,
+            role: response.body.role,
+            accessToken: response.body.accessToken
+          });
+
+          navigate("/main-dashboard");
         }
+      } catch (error) {
+        console.log("asds111");
+        if (error.response && error.response.status === 401) {
+          alert("Invalid email and password!");
+        }
+        else {
+          alert("Network Error");
+        }
+        setTimeout(() => setError(''), 5000);
+      }
 
     } else {
       const username = form.usernameSignup.value.trim();
@@ -73,40 +81,31 @@ const Login = () => {
         }, 5000)
         return;
       }
-
-      // const alreadyExists = users.find(u => u.email === email);
-
-      // if (alreadyExists) {
-      //     setError("email already exisits .. usedifferent one");
-      //     setTimeout(() => {
-      //         setError(null)
-      //     }, 5000)
-      // } else
       try {
-            const response = await ApiService.signupUser({ username, email,password, phoneNumber, cnic });
-            console.log(response);
-            if (response.statusCode === 200) {
-                alert("Login Successful!");
-                setIsAuthenticated(true);
-                localStorage.setItem('token', response.accessToken); 
-                navigate("/main-dashboard");
-            }
-        } catch (error) {
-          console.log("asds111");
-            if(error.response && error.response.status === 400){
-            alert("Invalid email and password!");
-            }
-            else{
-                alert("Network Error");
-            }
-            setTimeout(() => setError(''), 5000);
+        const response = await ApiService.signupUser({ username, email, password, phoneNumber, cnic });
+        console.log(response);
+        if (response.statusCode === 200) {
+          alert("Login Successful!");
+          setIsAuthenticated(true);
+          localStorage.setItem('token', response.accessToken);
+          navigate("/main-dashboard");
         }
+      } catch (error) {
+        console.log("asds111");
+        if (error.response && error.response.status === 400) {
+          alert("Invalid email and password!");
+        }
+        else {
+          alert("Network Error");
+        }
+        setTimeout(() => setError(''), 5000);
+      }
     }
   };
 
-  
 
-  
+
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#c3dafe] to-[#ebf4ff] animate-fadeIn">
@@ -234,7 +233,7 @@ const Login = () => {
                   {isPass ? <IoIosEye size='1.2em' /> : <IoIosEyeOff size='1.2em' />}
                 </span>
               </div>
-               {/* confirm password input */}
+              {/* confirm password input */}
               <div className='relative'>
                 <input
                   type={isPass ? 'text' : 'password'}

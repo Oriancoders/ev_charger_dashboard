@@ -18,8 +18,16 @@ export const GlobalProvider = ({ children }) => {
     const [isOn, setIsOn] = useState(true);
     const [isLoggedIn , setIsLoggedIn] = useState(false)
     const [authType , setAuthType] = useState("Login")
-    const [isAuthenticated ,setIsAuthenticated] = useState(true)
+    const [isAuthenticated ,setIsAuthenticated] = useState(false);
     const [ROLE , setROLE] = useState("USER")
+    const [authData, setAuthData] = useState({
+        id: '',
+        username: '',
+        email: '',
+        role: '',
+        accessToken: ''
+    });
+
 
     const formatTime = (totalSeconds) => {
     const hours = Math.floor(totalSeconds / 3600);
@@ -66,7 +74,8 @@ export const GlobalProvider = ({ children }) => {
             authType , setAuthType,
             isAuthenticated ,setIsAuthenticated,
             ROLE , setROLE,
-            formatTime
+            formatTime,
+            authData, setAuthData
 
             }}>
             {children}
