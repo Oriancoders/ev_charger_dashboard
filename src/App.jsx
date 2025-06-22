@@ -6,12 +6,16 @@ import { useGlobalContext } from './GlobalStates/GlobalState';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
 function App() {
-    const {isAuthenticated , setIsAuthenticated} = useGlobalContext();
-    useEffect(() => {
-       setIsAuthenticated(localStorage.getItem('isAuthenticated'))
-      console.log("login hua wa hai ? " , isAuthenticated)
+    const {isAuthenticated , setIsAuthenticated, authData, setAuthData} = useGlobalContext();
+    // useEffect(() => {
+    //     const token = localStorage.getItem('token');
+    //     if (token) {
+    //         setIsAuthenticated(true);
+    //     } else {
+    //         setIsAuthenticated(false);
+    //     }
   
-    } , [isAuthenticated])
+    // } , [isAuthenticated])
   return (
     <div className="overflow-x-hidden scrollbar-hidden text-[#1E1E2F]">
 

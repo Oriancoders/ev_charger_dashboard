@@ -8,7 +8,7 @@ import ApiService from "../ApiServices/ApiService";
 
 
 const Login = () => {
-  const { authType, setAuthType, isAuthenticated, setIsAuthenticated } = useGlobalContext();
+  const { authType, setAuthType, isAuthenticated, setIsAuthenticated, authData, setAuthData } = useGlobalContext();
   const [isPass, setIsPass] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -30,87 +30,82 @@ const Login = () => {
       }
 
       try {
-        console.log(email,password);
-            const response = await ApiService.loginUser({ email, password });
-            console.log(response);
-            if (response.statusCode == 200) {
-                alert("Login Successful!");
-                localStorage.setItem('token', response.token);
-                localStorage.setItem('role', response.role);
-                localStorage.setItem('email',response.email);
-                localStorage.setItem('username',response.username);
-                localStorage.setItem('isAuthenticated' , true)
-                // navigate(from, { replace: true });
-                console.log(response);
-            }
-        } catch (error) {
-          console.log("asds111");
-            if(error.response && error.response.status === 401){
-            alert("Invalid email and password!");
-            }
-            else{
-                alert("Network Error");
-            }
-            setTimeout(() => setError(''), 5000);
-        }
-      
+        const response = await ApiService.loginUser({ email, password });
+        if (response.statusCodeValue === 200) {
+          alert("Login Successful!");
+          setIsAuthenticated(true);
 
-      // if (user) {
-      //   alert("Login successful!");
-      //   // localStorage.setItem('currUser' , JSON.stringify(user))
-      //   localStorage.setItem('isAuthenticated', true)
-      //   setIsAuthenticated(localStorage.getItem("isAuthenticated"))
-      //   navigate("/main-dashboard")
-      // } else {
-      //   setError("Invalid email or Password");
-      //   setTimeout(() => {
-      //     setError(null)
-      //   }, 5000)
-      // }
+          // Update authData state
+          setAuthData({
+            id: response.body.id,
+            username: response.body.username,
+            email: response.body.email,
+            role: response.body.role,
+            accessToken: response.body.accessToken
+          });
+
+          navigate("/main-dashboard");
+        }
+      } catch (error) {
+        console.log("asds111");
+        if (error.response && error.response.status === 401) {
+          alert("Invalid email and password!");
+        }
+        else {
+          alert("Network Error");
+        }
+        setTimeout(() => setError(''), 5000);
+      }
 
     } else {
+      const username = form.usernameSignup.value.trim();
       const email = form.emailSignup.value.trim();
-      // const email = form.emailSignup.value.trim();
       const password = form.passwordSignup.value;
+      const confirmPassword = form.confirmPasswordSignup.value;
+      const phoneNumber = form.phoneNumberSignup.value.trim();
+      const cnic = form.cnicSignup.value.trim();
 
-      if (!email || !email || !password) {
+      if (password !== confirmPassword) {
+        setError("Passwords do not match");
+        setTimeout(() => {
+          setError(null)
+        }, 5000);
+        return;
+
+      }
+
+      if (!username || !email || !password || !confirmPassword || !phoneNumber || !cnic) {
         setError("Please fill all input fields")
         setTimeout(() => {
           setError(null)
         }, 5000)
         return;
       }
-
-      // const alreadyExists = users.find(u => u.email === email);
-
-      // if (alreadyExists) {
-      //     setError("email already exisits .. usedifferent one");
-      //     setTimeout(() => {
-      //         setError(null)
-      //     }, 5000)
-      // } else
-      {
-        setError("Signup successful! ... Please Login to continue");
-        setTimeout(() => {
-          setError(null)
-        }, 5000)
-        const newUser = {
-          userId: "u" + (users.length + 1),
-          email: email.trim(),
-          email: email.trim(),
-          password: password.trim(),
-          files: [],
-        };
-
-        users.push(newUser);  // ⬅️ Adds to your array
-        console.log("Updated users list:", users);
+      try {
+        const response = await ApiService.signupUser({ username, email, password, phoneNumber, cnic });
+        console.log(response);
+        if (response.statusCode === 200) {
+          alert("Login Successful!");
+          setIsAuthenticated(true);
+          localStorage.setItem('token', response.accessToken);
+          navigate("/main-dashboard");
+        }
+      } catch (error) {
+        console.log("asds111");
+        if (error.response && error.response.status === 400) {
+          alert("Invalid email and password!");
+        }
+        else {
+          alert("Network Error");
+        }
+        setTimeout(() => setError(''), 5000);
       }
     }
   };
 
-  
 
-  
+
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#c3dafe] to-[#ebf4ff] animate-fadeIn">
@@ -202,7 +197,7 @@ const Login = () => {
                 className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200'
                 placeholder='User Name'
                 maxLength={20}
-                name="emailSignup"
+                name="usernameSignup"
               />
               <input
                 type='email'
@@ -211,12 +206,40 @@ const Login = () => {
                 maxLength={40}
                 name="emailSignup"
               />
+
+              <input
+                type='number'
+                className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200'
+                placeholder='Phone Number'
+                maxLength={11}
+                name="phoneNumberSignup"
+              />
+              <input
+                type='text'
+                className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200'
+                placeholder='CNIC Number'
+                maxLength={13}
+                name="cnicSignup"
+              />
               <div className='relative'>
                 <input
                   type={isPass ? 'text' : 'password'}
                   name="passwordSignup"
                   className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200'
                   placeholder='Enter your password'
+                  maxLength={20}
+                />
+                <span onClick={() => setIsPass(!isPass)} className='absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer hover:text-blue-600 transition-all'>
+                  {isPass ? <IoIosEye size='1.2em' /> : <IoIosEyeOff size='1.2em' />}
+                </span>
+              </div>
+              {/* confirm password input */}
+              <div className='relative'>
+                <input
+                  type={isPass ? 'text' : 'password'}
+                  name="confirmPasswordSignup"
+                  className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200'
+                  placeholder='Enter your Confirm password'
                   maxLength={20}
                 />
                 <span onClick={() => setIsPass(!isPass)} className='absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer hover:text-blue-600 transition-all'>
