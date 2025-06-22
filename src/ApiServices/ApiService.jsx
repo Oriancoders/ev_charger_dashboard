@@ -18,9 +18,21 @@ export default class ApiService {
     }
 
     static async loginUser(user) {
+    const response = await axios.post(
+        `${this.BASE_URL}/auth/login`,
+        user,
+        {
+            withCredentials: true // ✅ allow browser to store cookies (like refresh token)
+        }
+    );
+    return response.data;  
+    }
+
+    static async signupUser(user) {
         const response = await axios.post(
-            `${this.BASE_URL}/auth/login`,user)
+            `${this.BASE_URL}/auth/signup`, user)
         return response.data;
     }
+
 
 }

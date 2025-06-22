@@ -8,8 +8,12 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 function App() {
     const {isAuthenticated , setIsAuthenticated} = useGlobalContext();
     useEffect(() => {
-       setIsAuthenticated(localStorage.getItem('isAuthenticated'))
-      console.log("login hua wa hai ? " , isAuthenticated)
+        const token = localStorage.getItem('token');
+        if (token) {
+            setIsAuthenticated(true);
+        } else {
+            setIsAuthenticated(false);
+        }
   
     } , [isAuthenticated])
   return (
