@@ -14,16 +14,16 @@ const iconMap = {
 
 const Notifications = () => {
 
-    const {ROLE} = useGlobalContext()
+    const {ROLE , authData} = useGlobalContext()
     
     return (
         <div className="sm:p-6 p-3 bg-[#F4F6F8] h-screen overflow-y-scroll">
             
                     <div className="w-full flex justify-between items-center  font-bold mb-3  px-3">
-                      <FaBell className="text-4xl" />
-                      <h2 className="text-[24px] font-bold  text-[#1E1E2F] italic">Notifications</h2>
+                      <FaBell className="sm:text-4xl text-xl" />
+                      <h2 className="sm:text-[24px] text-lg font-bold  text-[#1E1E2F] italic">Notifications</h2>
             
-                      <h1 className="bg-[#1E1E2F] rounded-sm px-3 py-2 text-white">{ROLE == "ADMIN" ? "ADMIN" : "USERNAME" }</h1>
+                      <h1 className="bg-[#1E1E2F] rounded-sm px-3 py-2 text-white sm:text-lg text-xs">{ROLE == "ADMIN" ? "ADMIN" : authData.username }</h1>
                     </div>
                  
             <div className="space-y-4">

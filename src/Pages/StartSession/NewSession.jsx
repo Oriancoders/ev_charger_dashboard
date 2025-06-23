@@ -14,7 +14,7 @@ import {
 import { useGlobalContext } from '../../GlobalStates/GlobalState';
 
 const NewSession = () => {
-    const { formatTime } = useGlobalContext()
+    const { formatTime , authData } = useGlobalContext()
     const [sessionName, setSessionName] = useState('');
     const [vehicleName, setVehicleName] = useState('');
     const [portType, setPortType] = useState('');
@@ -85,7 +85,7 @@ const NewSession = () => {
                 <FaPlus className="sm:text-4xl text-xl" />
                 <h2 className="sm:text-[24px] text-lg font-bold  text-[#1E1E2F] italic">Activate Session</h2>
 
-                <h1 className="bg-[#1E1E2F] rounded-sm px-3 py-2 text-white">USER NAME</h1>
+                <h1 className="bg-[#1E1E2F] rounded-sm px-3 py-2 text-white sm:text-lg text-xs">{authData.username}</h1>
             </div>
             {!sessionStarted && !sessionEnded && (
                 <form className=" p-3 w-full ">

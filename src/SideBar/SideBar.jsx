@@ -41,7 +41,7 @@ const Sidebar = () => {
   }
 
   return (
-    <div style={{transform :  isSideBarOpen ? 'translateX(0%)' : 'translateX(-100%)' ,  }} className="w-64 h-screen   bg-[#F4F6F8] shadow-md flex flex-col justify-between sm:relative absolute transition-all ease-in-out">
+    <div style={{transform :  isSideBarOpen ? 'translateX(0%)' : 'translateX(-100%)' ,  }} className="sm:w-64 h-screen   bg-[#F4F6F8] shadow-md flex flex-col justify-between sm:relative absolute transition-all ease-in-out">
       
       {scrwidth < 640 && (
         <div onClick={() => setIsSideBarOpen(!isSideBarOpen)} className="absolute text-xl py-16 px-2 rounded-r-2xl bg-linear-to-r from-[#0A86F0] to-[#3870AB] text-white right-0 top-1/2 -translate-y-1/2 translate-x-full transition-all "><RxDoubleArrowLeft style={{transform : isSideBarOpen ? 'rotate(0deg)' : 'rotate(180deg)'}}/></div>
@@ -79,7 +79,7 @@ const NavItem = ({ icon, label, active, onClick }) => (
         : "text-[#1E1E2F] bg-white hover:bg-gray-200"
       }`}
   >
-    <span className="font-medium">{label}</span>
+    <span className="font-medium sm:text-lg text-xs">{label}</span>
     <span className="text-lg">{icon}</span>
   </div>
 );

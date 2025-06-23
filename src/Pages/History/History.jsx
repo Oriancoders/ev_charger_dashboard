@@ -12,46 +12,58 @@ const History = () => {
   const [toDate, setToDate] = useState(format(today, 'yyyy-MM-dd'));
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredData, setFilteredData] = useState([]);
-  const { ROLE,  sessions, setSessions, authData} = useGlobalContext()
+  const { ROLE, sessions, setSessions, authData, formatDate } = useGlobalContext()
+  // Fetch sessions from API
+  useEffect(() => {
+    const fetchSessions = async () => {
+      try {
+        const data = await ApiService.getAllSessions(authData.accessToken);
+
+        // Add serials like EV001, EV002, etc.
+        const dataWithSerials = data.map((session, index) => ({
+          ...session,
+          serial: `EV${(index + 1).toString().padStart(3, '0')}` // EV001, EV002...
+        }));
+
+        setSessions(dataWithSerials);
+        console.log("Fetched sessions with serials:", dataWithSerials);
+      } catch (error) {
+        console.error("Error fetching device:", error);
+      }
+    };
+
+    fetchSessions();
+  }, []);
+
+
 
   useEffect(() => {
-    const filtered = historyData.filter(session => {
-      const sessionDate = parseISO(session.date);
-      return isWithinInterval(sessionDate, {
+    if (!fromDate || !toDate) return;
+
+    const filtered = sessions.filter(session => {
+      const sessionStart = parseISO(session.startTime); // Use startTime
+      return isWithinInterval(sessionStart, {
         start: parseISO(fromDate),
         end: parseISO(toDate)
       });
     });
-    
 
     const searched = filtered.filter(session =>
-      session.serial.toLowerCase().includes(searchTerm.toLowerCase())
+      session.serial?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     setFilteredData(searched);
+    console.log(  "Ye raha filter karkay data hahaa",filteredData )
   }, [fromDate, toDate, searchTerm]);
 
-  // Fetch sessions from API
-    useEffect(() => {
-        const fetchSessions = async () => {
-          try {
-            const data = await ApiService.getAllSessions(authData.accessToken);
-            setSessions(data);
-            console.log("Fetched sessions:", data);
-          } catch (error) {
-            console.error("Error fetching device:", error);
-          }
-        };
-    
-        fetchSessions();
-      }, []);
+
 
   // Summary calculations
-  const totalSessions = filteredData.length;
-  const totalEnergy = filteredData.reduce((acc, curr) => acc + curr.powerSupplied, 0);
-  const totalEarnings = filteredData.reduce((acc, curr) => acc + curr.cost, 0);
+  const totalSessions = sessions.length;
+  const totalEnergy = sessions.reduce((acc, curr) => acc + curr.energyConsumed, 0).toFixed(2);
+  const totalEarnings = sessions.reduce((acc, curr) => acc + curr.cost, 0).toFixed(2);
 
-  const totalTimeMinutes = filteredData.reduce((acc, curr) => {
+  const totalTimeMinutes = sessions.reduce((acc, curr) => {
     const start = new Date(curr.startTime);
     const end = new Date(curr.endTime);
     return acc + (end - start) / 60000;
@@ -60,19 +72,19 @@ const History = () => {
   const totalMinutes = Math.floor(totalTimeMinutes % 60);
 
   return (
-    <div className="p-6 bg-[#F4F6F8] h-screen overflow-y-scroll">
+    <div className="sm:p-6 p-3 bg-[#F4F6F8] h-screen overflow-y-scroll">
 
       <div className="w-full flex justify-between items-center  font-bold mb-3  px-3">
-        <FaHistory className="text-4xl" />
-        <h2 className="text-[24px] font-bold  text-[#1E1E2F] italic">History</h2>
-        <h1 className="bg-[#1E1E2F] rounded-sm px-3 py-2 text-white">{ROLE == "ADMIN" ? "ADMIN" : "USERNAME"}</h1>
+        <FaHistory className="sm:text-4xl text-xl" />
+        <h2 className="sm:text-[24px] text-lg font-bold  text-[#1E1E2F] italic">History</h2>
+        <h1 className="bg-[#1E1E2F] rounded-sm px-3 py-2 text-white sm:text-lg text-xs">{ROLE == "ADMIN" ? "ADMIN" : authData.username}</h1>
       </div>
 
 
       {/* Filter bar */}
-      <div className="bg-white shadow rounded-2xl p-3 flex sm:flex-row flex-col flex-wrap justify-between sm:items-center gap-4 mb-4">
-        <h1 className="text-lg font-semibold">Filters</h1>
-        <div className='text-[16px]'>
+      <div className="bg-white shadow rounded-2xl p-3 flex lg:flex-row flex-col flex-wrap justify-between lg:items-center gap-4 mb-4">
+        <h1 className="text-lg font-bold">Filters</h1>
+        <div className='sm:text-[16px] text-xs'>
           <label className="mr-2 font-medium">From Date:</label>
           <input
             type="date"
@@ -81,7 +93,7 @@ const History = () => {
             className="border rounded-2xl px-2 py-1"
           />
         </div>
-        <div className='text-[16px]'>
+        <div className='sm:text-[16px] text-xs'>
           <label className="mr-2 font-medium">To Date:</label>
           <input
             type="date"
@@ -93,7 +105,7 @@ const History = () => {
       </div>
 
       {/* Summary cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+      <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 gap-4 mb-4">
         <SummaryCard title="Total Sessions" value={totalSessions} />
         <SummaryCard title="Total Energy Supplied" value={`${totalEnergy}kw`} />
         <SummaryCard title="Total Earning (PKR)" value={totalEarnings.toLocaleString()} />
@@ -114,10 +126,10 @@ const History = () => {
       {/* Table */}
       <div className=" bg-white ">
         <table className="w-full table-auto ">
-          <thead className="bg-gray-200 text-lg">
+          <thead className="bg-gray-200 sm:text-lg text-sm">
             <tr>
               <th className="p-2 border-[1px] border-gray-400">Date</th>
-              <th className="p-2 border-[1px] border-gray-400">Vehicle (Session ID)</th>
+              <th className="p-2 border-[1px] border-gray-400">Session ID</th>
               <th className="p-2 border-[1px] border-gray-400">Energy (Kwh)</th>
               <th className="p-2 border-[1px] border-gray-400">Earnings (PKR)</th>
               <th className="p-2 border-[1px] border-gray-400">Time Taken</th>
@@ -132,11 +144,13 @@ const History = () => {
               const min = Math.floor(diffMinutes % 60);
 
               return (
-                <tr key={index} className=" text-sm ">
-                  <td className="p-2 border-[1px] border-gray-300">{format(parseISO(session.date), 'dd/MM/yyyy')}</td>
+                <tr key={index} className=" sm:text-sm text-xs">
+                  <td className="p-2 border-[1px] border-gray-300">
+                    {session.startTime ? format(parseISO(session.startTime), 'dd/MM/yyyy') : 'N/A'}
+                  </td>
                   <td className="p-2 border-[1px] border-gray-300">{session.serial}</td>
-                  <td className="p-2 border-[1px] border-gray-300">{session.powerSupplied}</td>
-                  <td className="p-2 border-[1px] border-gray-300">{session.cost}</td>
+                  <td className="p-2 border-[1px] border-gray-300">{session.energyConsumed.toFixed(2)}</td>
+                  <td className="p-2 border-[1px] border-gray-300">{session.cost.toFixed(2)}</td>
                   <td className="p-2 border-[1px] border-gray-300">{`${hr}hr ${min}min`}</td>
                 </tr>
               );
@@ -154,7 +168,7 @@ const History = () => {
 };
 
 const SummaryCard = ({ title, value }) => (
-  <div className="bg-white  shadow p-4 flex flex-col justify-between rounded-2xl gap-y-4 min-h-36">
+  <div className="bg-white  shadow p-4 flex flex-col justify-between rounded-2xl gap-y-4 sm:min-h-36 min-h-20">
     <div className="text-lg font-bold italic">{title}</div>
     <div className="sm:text-xl text-xs font-bold text-blue-600">{value}</div>
   </div>
