@@ -53,7 +53,7 @@ const RecentSession = () => {
   );
 };
 
-const InfoBox = ({ label, value, sub, color = "text-black", children }) => (
+const InfoBox = ({ label, value, sub, color = "text- ", children }) => (
   <div className="bg-white p-4 rounded-lg shadow flex flex-col  justify-between gap-y-3 min-h-36">
     <p className="text-lg font-bold italic">{label}</p>
     <p className={`text-[16px] font-bold ${color}`}>{value}</p>

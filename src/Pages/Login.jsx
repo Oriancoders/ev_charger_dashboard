@@ -11,6 +11,7 @@ const Login = () => {
   const { authType, setAuthType, isAuthenticated, setIsAuthenticated, authData, setAuthData } = useGlobalContext();
   const [isPass, setIsPass] = useState(false);
   const [error, setError] = useState("");
+  const [isFetching, setIsFetching] = useState(false)
   const navigate = useNavigate();
 
   const handleAuthentication = async (e) => {
@@ -28,8 +29,9 @@ const Login = () => {
         }, 5000)
         return;
       }
-
       try {
+        setIsFetching(true)
+
         const response = await ApiService.loginUser({ email, password });
         if (response.statusCodeValue === 200) {
           alert("Login Successful!");
@@ -45,14 +47,16 @@ const Login = () => {
           });
 
           navigate("/main-dashboard");
+          setIsFetching(false)
         }
       } catch (error) {
+        setIsFetching(false)
         console.log("asds111");
         if (error.response && error.response.status === 401) {
-          alert("Invalid email and password!");
+          setError("Wrong email or password")
         }
         else {
-          alert("Network Error");
+          setError("Our Server is currently not responing")
         }
         setTimeout(() => setError(''), 5000);
       }
@@ -82,15 +86,16 @@ const Login = () => {
         return;
       }
       try {
+        setIsFetching(true)
         const response = await ApiService.signupUser({ username, email, password, phoneNumber, cnic });
         console.log(response);
         if (response.statusCode === 200) {
-          alert("Login Successful!");
-          setIsAuthenticated(true);
-          localStorage.setItem('token', response.accessToken);
-          navigate("/main-dashboard");
+          alert("Signup Successfully now please Login");
+          setAuthType("Login")
         }
+        setIsFetching(false)
       } catch (error) {
+        setIsFetching(false)
         console.log("asds111");
         if (error.response && error.response.status === 400) {
           alert("Invalid email and password!");
@@ -108,13 +113,13 @@ const Login = () => {
 
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#c3dafe] to-[#ebf4ff] animate-fadeIn">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#c3dafe] to-[#ebf4ff] animate-fadeIn py-8">
       <motion.div
         layout
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
-        className="bg-linear-150 from-white via-5% to-blue-100   p-8 rounded-2xl space-y-4 shadow-2xl w-[90%] max-w-md transition-all duration-300 ease-in-out hover:shadow-blue-200">
+        className="bg-linear-150 from-white via-5% to-blue-100   p-8 rounded-2xl space-y-4 shadow-2xl w-[90%] max-w-md transition-all duration-100 ease-in-out hover:shadow-blue-200 ">
         <h1 className="text-5xl font-extrabold text-center text-blue-600  tracking-wide">
           EV Charger
         </h1>
@@ -142,115 +147,132 @@ const Login = () => {
         </div>
 
         {/* AnimatePresence for smooth transition */}
-        <AnimatePresence mode="wait">
+        <AnimatePresence >
           {authType === "Login" ? (
             <motion.form
               key="login"
-              layout
-              initial={{ opacity: 0, scale: 0.1 }}
+              initial={{ opacity: 0, scale: 0.1, }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.1 }}
-              transition={{ duration: 0.3 }}
+              transition={{ duration: 0.2 }}
               className="space-y-6 text-center"
               onSubmit={handleAuthentication}
             >
-              <input
-                type='text'
-                name="emailLogin"
-                className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200'
-                placeholder='User Name'
-                maxLength={20}
-              />
+              {error && <p className='text-red-600 my-3'>{error}</p>}
 
-              <div className='relative'>
-                <input
-                  type={isPass ? 'text' : 'password'}
-                  name="passwordLogin"
-                  className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200'
-                  placeholder='Enter your password'
-                  maxLength={20}
-                />
-                <span onClick={() => setIsPass(!isPass)} className='absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer hover:text-blue-600 transition-all'>
-                  {isPass ? <IoIosEye size='1.2em' /> : <IoIosEyeOff size='1.2em' />}
-                </span>
-              </div>
+              {isFetching ? (
+
+                <div className="w-full flex justify-center items-center text-xl min-h-32">
+                  Logging in ........
+                </div>
+              ) : (
+                <>
+                  <input
+                    type='text'
+                    name="emailLogin"
+                    className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200'
+                    placeholder='User Name'
+                    maxLength={20}
+                  />
+
+                  <div className='relative'>
+                    <input
+                      type={isPass ? 'text' : 'password'}
+                      name="passwordLogin"
+                      className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200'
+                      placeholder='Enter your password'
+                      maxLength={20}
+                    />
+                    <span onClick={() => setIsPass(!isPass)} className='absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer hover:text-blue-600 transition-all'>
+                      {isPass ? <IoIosEye size='1.2em' /> : <IoIosEyeOff size='1.2em' />}
+                    </span>
+                  </div>
 
 
-              {error && <p className='text-red-600 my-3'>{error}ss</p>}
-              <button type='submit' className='w-48 cursor-pointer bg-linear-to-b from-[#0A86F0] via-[#0A86F0] to-[#3870AB] text-white py-3 rounded-full font-semibold hover:bg-blue-700 transition-all duration-200'>
-                Login
-              </button>
+                  <button type='submit' className='w-48 cursor-pointer bg-linear-to-b from-[#0A86F0] via-[#0A86F0] to-[#3870AB] text-white py-3 rounded-full font-semibold hover:bg-blue-700 transition-all duration-200'>
+                    Login
+                  </button>
+                </>
+              )}
             </motion.form>
           ) : (
             <motion.form
               key="signup"
-              layout
               initial={{ opacity: 0, scale: 0.1 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.1 }}
-              transition={{ duration: 0.3 }}
+              transition={{ duration: 0.2 }}
               className="space-y-6 text-center"
               onSubmit={handleAuthentication}
             >
-              <input
-                type='text'
-                className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200'
-                placeholder='User Name'
-                maxLength={20}
-                name="usernameSignup"
-              />
-              <input
-                type='email'
-                className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200'
-                placeholder='Email Address'
-                maxLength={40}
-                name="emailSignup"
-              />
-
-              <input
-                type='number'
-                className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200'
-                placeholder='Phone Number'
-                maxLength={11}
-                name="phoneNumberSignup"
-              />
-              <input
-                type='text'
-                className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200'
-                placeholder='CNIC Number'
-                maxLength={13}
-                name="cnicSignup"
-              />
-              <div className='relative'>
-                <input
-                  type={isPass ? 'text' : 'password'}
-                  name="passwordSignup"
-                  className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200'
-                  placeholder='Enter your password'
-                  maxLength={20}
-                />
-                <span onClick={() => setIsPass(!isPass)} className='absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer hover:text-blue-600 transition-all'>
-                  {isPass ? <IoIosEye size='1.2em' /> : <IoIosEyeOff size='1.2em' />}
-                </span>
-              </div>
-              {/* confirm password input */}
-              <div className='relative'>
-                <input
-                  type={isPass ? 'text' : 'password'}
-                  name="confirmPasswordSignup"
-                  className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200'
-                  placeholder='Enter your Confirm password'
-                  maxLength={20}
-                />
-                <span onClick={() => setIsPass(!isPass)} className='absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer hover:text-blue-600 transition-all'>
-                  {isPass ? <IoIosEye size='1.2em' /> : <IoIosEyeOff size='1.2em' />}
-                </span>
-              </div>
               {error && <p className='text-red-600 my-3'>{error}</p>}
 
-              <button className='w-48 cursor-pointer bg-linear-to-b from-[#0A86F0] via-[#0A86F0] to-[#3870AB] text-white py-3 rounded-full font-semibold hover:bg-blue-700 transition-all duration-200'>
-                Signup
-              </button>
+              {isFetching ? (
+                <div className="w-full flex justify-center items-center text-xl min-h-32">
+                  Posting user Data ...
+                </div>
+              ) : (
+                <>
+                  <input
+                    type='text'
+                    className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200'
+                    placeholder='User Name'
+                    maxLength={20}
+                    name="usernameSignup"
+                  />
+                  <input
+                    type='email'
+                    className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200'
+                    placeholder='Email Address'
+                    maxLength={40}
+                    name="emailSignup"
+                  />
+
+                  <input
+                    type='number'
+                    className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200'
+                    placeholder='Phone Number'
+                    maxLength={11}
+                    name="phoneNumberSignup"
+                  />
+                  <input
+                    type='text'
+                    className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200'
+                    placeholder='CNIC Number'
+                    maxLength={13}
+                    name="cnicSignup"
+                  />
+                  <div className='relative'>
+                    <input
+                      type={isPass ? 'text' : 'password'}
+                      name="passwordSignup"
+                      className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200'
+                      placeholder='Enter your password'
+                      maxLength={20}
+                    />
+                    <span onClick={() => setIsPass(!isPass)} className='absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer hover:text-blue-600 transition-all'>
+                      {isPass ? <IoIosEye size='1.2em' /> : <IoIosEyeOff size='1.2em' />}
+                    </span>
+                  </div>
+                  {/* confirm password input */}
+                  <div className='relative'>
+                    <input
+                      type={isPass ? 'text' : 'password'}
+                      name="confirmPasswordSignup"
+                      className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200'
+                      placeholder='Enter your Confirm password'
+                      maxLength={20}
+                    />
+                    <span onClick={() => setIsPass(!isPass)} className='absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer hover:text-blue-600 transition-all'>
+                      {isPass ? <IoIosEye size='1.2em' /> : <IoIosEyeOff size='1.2em' />}
+                    </span>
+                  </div>
+
+                  <button disabled={isFetching ? true : false} className='w-48 cursor-pointer bg-linear-to-b from-[#0A86F0] via-[#0A86F0] to-[#3870AB] text-white py-3 rounded-full font-semibold hover:bg-blue-700 transition-all duration-200'>
+                    Signup
+                  </button>
+                </>
+              )}
             </motion.form>
           )}
         </AnimatePresence>
