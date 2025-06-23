@@ -27,6 +27,7 @@ export const GlobalProvider = ({ children }) => {
         role: '',
         accessToken: ''
     });
+    const [sessions, setSessions] = useState([]); // For storing session data
 
 
     const formatTime = (totalSeconds) => {
@@ -75,7 +76,8 @@ export const GlobalProvider = ({ children }) => {
             isAuthenticated ,setIsAuthenticated,
             ROLE , setROLE,
             formatTime,
-            authData, setAuthData
+            authData, setAuthData,
+            sessions, setSessions
 
             }}>
             {children}

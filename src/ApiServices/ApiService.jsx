@@ -43,4 +43,15 @@ export default class ApiService {
     );
     return response.data;
   }
+
+  // Session Management APIs (token required)
+  static async getAllSessions(token) {
+    const response = await axios.get(`${this.BASE_URL}/sessions/all`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  }
 }
