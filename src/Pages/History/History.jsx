@@ -3,6 +3,7 @@ import { format, parseISO, isWithinInterval, subDays } from 'date-fns';
 import historyData from '../../MockData/MockData.json'; // <-- Replace this with your actual import
 import { FaHistory } from 'react-icons/fa';
 import { useGlobalContext } from '../../GlobalStates/GlobalState';
+import ApiService from '../../ApiServices/ApiService';
 
 const History = () => {
   const today = new Date();
@@ -11,7 +12,7 @@ const History = () => {
   const [toDate, setToDate] = useState(format(today, 'yyyy-MM-dd'));
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredData, setFilteredData] = useState([]);
-  const { ROLE } = useGlobalContext()
+  const { ROLE,  sessions, setSessions, authData} = useGlobalContext()
 
   useEffect(() => {
     const filtered = historyData.filter(session => {
@@ -21,6 +22,7 @@ const History = () => {
         end: parseISO(toDate)
       });
     });
+    
 
     const searched = filtered.filter(session =>
       session.serial.toLowerCase().includes(searchTerm.toLowerCase())
@@ -28,6 +30,21 @@ const History = () => {
 
     setFilteredData(searched);
   }, [fromDate, toDate, searchTerm]);
+
+  // Fetch sessions from API
+    useEffect(() => {
+        const fetchSessions = async () => {
+          try {
+            const data = await ApiService.getAllSessions(authData.accessToken);
+            setSessions(data);
+            console.log("Fetched sessions:", data);
+          } catch (error) {
+            console.error("Error fetching device:", error);
+          }
+        };
+    
+        fetchSessions();
+      }, []);
 
   // Summary calculations
   const totalSessions = filteredData.length;

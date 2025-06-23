@@ -1,11 +1,27 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import LiveDataPanel from "../mainDashboard/components/LiveDataPanel";
 import { useGlobalContext } from "../../GlobalStates/GlobalState";
 import { FaBolt } from "react-icons/fa";
+import ApiService from "../../ApiServices/ApiService";
 
 const ChargerControlPanel = () => {
-  const { isOn, setIsOn, mockLiveData } = useGlobalContext();
+  const { isOn, setIsOn, mockLiveData, authData } = useGlobalContext();
 
+  const [deviceData, setDeviceData] = useState(null);
+  // fech deviceId from URL params or context
+  useEffect(() => {
+    const fetchDevice = async () => {
+      console.log(authData.accessToken)
+      try {
+        const data = await ApiService.getDevices('DEVICE123', authData.accessToken);
+        setDeviceData(data);
+      } catch (error) {
+        console.error("Error fetching device:", error);
+      }
+    };
+
+    fetchDevice();
+  }, []);
 
 
   const toggleSwitch = () => setIsOn(!isOn);
@@ -30,17 +46,17 @@ const ChargerControlPanel = () => {
       <div className="w-full flex justify-between items-end mt-8 px-2">
         <h2 className="text-[24px] font-bold text-[#1E1E2F] italic">Station #1</h2>
 
-      {/* Capsule Switch */}
-      <div
-        onClick={() => toggleSwitch()}
-        className={`w-20 h-10 flex items-center rounded-full cursor-pointer p-1 transition-colors duration-300 ${isOn ? "bg-green-500" : "bg-red-500"
-          }`}
-      >
+        {/* Capsule Switch */}
         <div
-          className={`w-8 h-8 bg-white rounded-full shadow-md transform transition-transform duration-300 ${isOn ? "translate-x-10" : "translate-x-0"
+          onClick={() => toggleSwitch()}
+          className={`w-20 h-10 flex items-center rounded-full cursor-pointer p-1 transition-colors duration-300 ${isOn ? "bg-green-500" : "bg-red-500"
             }`}
-        />
-      </div>
+        >
+          <div
+            className={`w-8 h-8 bg-white rounded-full shadow-md transform transition-transform duration-300 ${isOn ? "translate-x-10" : "translate-x-0"
+              }`}
+          />
+        </div>
       </div>
 
 
@@ -50,15 +66,21 @@ const ChargerControlPanel = () => {
       {/* Recommendations */}
       <div className="mt-4 p-4 bg-white shadow-md rounded-lg border border-gray-200">
         <h1 className="text-[18px] font-bold">Station Details</h1>
+        {
+          deviceData ? (
             <ul className="text-[14px] mb-4">
-              <li><strong>Device ID : </strong> 21312313</li>
-              <li><strong>Name Of Station : </strong> EV Charger Station 1</li>
-              <li><strong>Location : </strong> hyderabad ka grage</li>
-              <li><strong>Status : </strong> Active</li>
-              <li><strong>Last Updated : </strong> 24 may 2027 </li>
+              <li><strong>Device ID : </strong>{deviceData.deviceId}</li>
+              <li><strong>Name Of Station : </strong>{deviceData.name}</li>
+              <li><strong>Location : </strong>{deviceData.location}</li>
+              <li><strong>Status : </strong>{deviceData.status}</li>
+              <li><strong>Last Updated : </strong>{deviceData.lastUpdated}</li>
 
             </ul>
-            <hr />
+          ) : (
+            <p className="text-[14px] text-gray-600">Loading device data...</p>
+          )
+        }
+        <hr />
         <h1 className="font-semibold   text-[18px] mt-4">Recommendations</h1>
         <p className="text-[14px] text-gray-600 italic">{getRecommendation()}</p>
       </div>

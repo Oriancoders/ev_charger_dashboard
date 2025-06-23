@@ -5,7 +5,7 @@ import { format, parseISO } from "date-fns";
 
 const RecentSession = () => {
   const session = sessions[4]; // latest session at top
-  const {ROLE} = useGlobalContext()
+  const {ROLE, authData} = useGlobalContext()
 
   return (
     <div className="sm:p-6 p-3 bg-[#F4F6F8] min-h-screen overflow-y-scroll">
@@ -14,7 +14,7 @@ const RecentSession = () => {
           <FaClock className="text-4xl" />
           <h2 className="text-[24px] font-bold  text-[#1E1E2F] italic">Notifications</h2>
 
-          <h1 className="bg-[#1E1E2F] rounded-sm px-3 py-2 text-white">{ROLE == "ADMIN" ? "ADMIN" : "USERNAME" }</h1>
+          <h1 className="bg-[#1E1E2F] rounded-sm px-3 py-2 text-white">{ROLE == "ADMIN" ? "ADMIN" : authData.username }</h1>
         </div>
 
       <h2 className="text-[24px] font-bold mb-4 text-[#1E1E2F] italic">Most Recent Charge</h2>
