@@ -53,17 +53,16 @@ const History = () => {
     );
 
     setFilteredData(searched);
-    console.log(  "Ye raha filter karkay data hahaa",filteredData )
   }, [fromDate, toDate, searchTerm]);
 
 
 
   // Summary calculations
-  const totalSessions = sessions.length;
-  const totalEnergy = sessions.reduce((acc, curr) => acc + curr.energyConsumed, 0).toFixed(2);
-  const totalEarnings = sessions.reduce((acc, curr) => acc + curr.cost, 0).toFixed(2);
+  const totalSessions = filteredData.length;
+  const totalEnergy = filteredData.reduce((acc, curr) => acc + curr.energyConsumed, 0).toFixed(2);
+  const totalEarnings = filteredData.reduce((acc, curr) => acc + curr.cost, 0).toFixed(2);
 
-  const totalTimeMinutes = sessions.reduce((acc, curr) => {
+  const totalTimeMinutes = filteredData.reduce((acc, curr) => {
     const start = new Date(curr.startTime);
     const end = new Date(curr.endTime);
     return acc + (end - start) / 60000;

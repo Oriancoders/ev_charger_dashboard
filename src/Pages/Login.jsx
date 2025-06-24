@@ -12,6 +12,7 @@ const Login = () => {
   const [isPass, setIsPass] = useState(false);
   const [error, setError] = useState("");
   const [isFetching, setIsFetching] = useState(false)
+  const [fetchMessage , setFetchMessage] = useState("")
   const navigate = useNavigate();
 
   const handleAuthentication = async (e) => {
@@ -30,11 +31,12 @@ const Login = () => {
         return;
       }
       try {
+        setFetchMessage("Fetching user information......")
         setIsFetching(true)
 
         const response = await ApiService.loginUser({ email, password });
         if (response.statusCodeValue === 200) {
-          alert("Login Successful!");
+          setFetchMessage("User fetched ...... redirecting to home")
           setIsAuthenticated(true);
 
           // Update authData state
@@ -86,22 +88,25 @@ const Login = () => {
         return;
       }
       try {
+        setFetchMessage("Registoring the user.....")
         setIsFetching(true)
         const response = await ApiService.signupUser({ username, email, password, phoneNumber, cnic });
         console.log(response);
         if (response.statusCode === 200) {
-          alert("Signup Successfully now please Login");
-          setAuthType("Login")
+          setFetchMessage("Registored the user ...... Now Login")
+          setTimeout(() => {
+            setAuthType("Login")
+          } , 2000)
         }
         setIsFetching(false)
       } catch (error) {
         setIsFetching(false)
         console.log("asds111");
         if (error.response && error.response.status === 400) {
-          alert("Invalid email and password!");
+          setError("Invalid email and password!");
         }
         else {
-          alert("Network Error");
+          setError("Network Error");
         }
         setTimeout(() => setError(''), 5000);
       }
@@ -163,7 +168,7 @@ const Login = () => {
               {isFetching ? (
 
                 <div className="w-full flex justify-center items-center text-xl min-h-32">
-                  Logging in ........
+                  {fetchMessage}
                 </div>
               ) : (
                 <>
@@ -209,7 +214,7 @@ const Login = () => {
 
               {isFetching ? (
                 <div className="w-full flex justify-center items-center text-xl min-h-32">
-                  Posting user Data ...
+                  {fetchMessage}
                 </div>
               ) : (
                 <>

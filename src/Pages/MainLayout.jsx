@@ -16,11 +16,6 @@ const MainLayout = () => {
     const [isSideBarOpen , setIsSideBarOpen] = useState(false)
 
     useEffect(() => {
-
-        console.log("item is ", activeItem)
-    }, [])
-
-    useEffect(() => {
         const fetchSessions = async () => {
           try {
             const data = await ApiService.getAllSessions(authData.accessToken);
@@ -42,7 +37,6 @@ const MainLayout = () => {
       }, []);
     return (
         <div className="flex overflow-hidden">
-
 
                 <Sidebar />
 

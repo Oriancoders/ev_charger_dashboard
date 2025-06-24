@@ -26,24 +26,23 @@ const menuItems = [
 ;
 
 const Sidebar = () => {
-  const { activeItem, setActiveItem, setIsAuthenticated , scrwidth} = useGlobalContext()
+  const { activeItem, setActiveItem, setIsAuthenticated , isAuthenticated , scrwidth} = useGlobalContext()
   const navigate = useNavigate()
   const [isSideBarOpen , setIsSideBarOpen] = useState(true)
 
   const logout = () => {
-    localStorage.setItem("isAuthenticated", false)
-    localStorage.removeItem("currUser")
-    setIsAuthenticated(localStorage.getItem("isAuthenticated"))
 
-    console.log("isAuthenticated hai?", localStorage.getItem("isAuthenticated"))
+    setIsAuthenticated(false)
+
+    console.log("isAuthenticated hai?", isAuthenticated)
     navigate("/")
 
   }
 
   return (
-    <div style={{transform :  isSideBarOpen ? 'translateX(0%)' : 'translateX(-100%)' ,  }} className="sm:w-64 h-screen   bg-[#F4F6F8] shadow-md flex flex-col justify-between sm:relative absolute transition-all ease-in-out">
+    <div style={{transform :  isSideBarOpen ? 'translateX(0%)' : 'translateX(-100%)' ,  }} className="md:w-64 h-screen   bg-[#F4F6F8] shadow-md flex flex-col justify-between md:relative absolute transition-all ease-in-out">
       
-      {scrwidth < 640 && (
+      {scrwidth < 765 && (
         <div onClick={() => setIsSideBarOpen(!isSideBarOpen)} className="absolute text-xl py-16 px-2 rounded-r-2xl bg-linear-to-r from-[#0A86F0] to-[#3870AB] text-white right-0 top-1/2 -translate-y-1/2 translate-x-full transition-all "><RxDoubleArrowLeft style={{transform : isSideBarOpen ? 'rotate(0deg)' : 'rotate(180deg)'}}/></div>
       )}
       <div>
