@@ -12,9 +12,10 @@ import {
     FaMoneyBill
 } from "react-icons/fa";
 import { useGlobalContext } from '../../GlobalStates/GlobalState';
+import ApiService from '../../ApiServices/ApiService';
 
 const NewSession = () => {
-    const { formatTime , authData } = useGlobalContext()
+    const { formatTime, authData } = useGlobalContext()
     const [sessionName, setSessionName] = useState('');
     const [vehicleName, setVehicleName] = useState('');
     const [portType, setPortType] = useState('');
@@ -55,22 +56,34 @@ const NewSession = () => {
     }, [sessionStarted, sessionEnded, maxBudget]);
 
 
-    const handleStart = () => {
-        if (isFormValid) {
-            setSessionStarted(true);
+    const handleStart = async () => {
+        try {
+            const data = await ApiService.startSession(authData.accessToken)
+            console.log("data jo start session par ara : ", data)
+            sessionStarted(true)
+        } catch (error) {
+            console.log("nh hua startt", error)
         }
     };
 
-    const handleStop = () => {
-        setSessionEnded(true);
-        setSessionStarted(false);
+    const handleStop = async () => {
+
+        try {
+            const data = await ApiService.stopSession(authData.accessToken)
+            console.log("data jo stop honai kai baad session par ara : ", data)
+            setSessionEnded(true);
+            setSessionStarted(false);
+        } catch (error) {
+            console.log("nh hua stop", error)
+        }
+
     };
 
     const handleScreenshotDownload = async () => {
         const element = document.getElementById("billing-summary");
 
         if (!element) return;
-    console.log("element is : " , element.innerHTML)
+        console.log("element is : ", element.innerHTML)
         const canvas = await html2canvas(element);
         const link = document.createElement("a");
         link.download = "charging_session_summary.png";
@@ -167,6 +180,15 @@ const NewSession = () => {
                             }`}
                     >
                         Start Session
+                    </button>
+
+                    <button
+                        type="button"
+                        onClick={handleStop}
+                        className={`mt-6 w-full p-3 rounded text-white font-semibold transition bg-red-500 hover:bg-red-500'
+                            }`}
+                    >
+                        Stop Session
                     </button>
                 </form>
             )}

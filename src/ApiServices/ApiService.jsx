@@ -87,4 +87,33 @@ export default class ApiService {
     return response.data;
   }
 
+  //api for starting a new session
+  static async startSession(token) {
+  const response = await axios.post(
+    `${this.BASE_URL}/sessions/start?deviceId=DEVICE123`,
+    {}, // empty body
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return response.data;
+}
+
+static async stopSession(token) {
+  const response = await axios.post(
+    `${this.BASE_URL}/sessions/stop?deviceId=DEVICE123`,
+    {}, // empty body
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return response.data;
+}
+
 }
