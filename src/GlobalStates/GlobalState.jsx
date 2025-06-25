@@ -27,6 +27,7 @@ export const GlobalProvider = ({ children }) => {
         role: '',
         accessToken: ''
     });
+    
     const [sessions, setSessions] = useState([]); // For storing session data
     const [filteredSessionsData, setFilteredSessionsData] = useState([]);
 

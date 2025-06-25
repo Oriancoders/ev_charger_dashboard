@@ -53,7 +53,6 @@ const Login = () => {
         }
       } catch (error) {
         setIsFetching(false)
-        console.log("asds111");
         if (error.response && error.response.status === 401) {
           setError("Wrong email or password")
         }

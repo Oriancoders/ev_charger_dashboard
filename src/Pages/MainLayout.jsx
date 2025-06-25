@@ -14,9 +14,8 @@ import ApiService from "../ApiServices/ApiService";
 const MainLayout = () => {
     const { activeItem, scrwidth , authData , setSessions } = useGlobalContext()
     const [isSideBarOpen , setIsSideBarOpen] = useState(false)
-
-    useEffect(() => {
-        const fetchSessions = async () => {
+    
+    const fetchSessions = async () => {
           try {
             const data = await ApiService.getAllSessions(authData.accessToken);
     
@@ -33,7 +32,29 @@ const MainLayout = () => {
           }
         };
     
-        fetchSessions();
+        const fetchUserSessions = async () => {
+          try {
+            const data = await ApiService.getUserSessions(authData.accessToken);
+    
+            // Add serials like EV001, EV002, etc.
+            const dataWithSerials = data.map((session, index) => ({
+              ...session,
+              serial: `EV${(index + 1).toString().padStart(3, '0')}` // EV001, EV002...
+            }));
+    
+            setSessions(dataWithSerials);
+            console.log("user kai sessions fetch hogai hai ", dataWithSerials);
+          } catch (error) {
+            alert("Error fetching device:", error);
+          }
+        };
+
+    useEffect(() => {
+        if (authData.role == "USER") {
+            fetchUserSessions()
+        } else{
+            fetchSessions();
+        }
       }, []);
     return (
         <div className="flex overflow-hidden">

@@ -13,6 +13,7 @@ import {
 import { useGlobalContext } from "../GlobalStates/GlobalState";
 import { useNavigate } from "react-router-dom";
 import { RxDoubleArrowLeft } from "react-icons/rx";
+import ApiService from "../ApiServices/ApiService";
 
 const menuItems = [
   { label: "Main Dashboard", icon: <FaTachometerAlt /> },
@@ -30,13 +31,18 @@ const Sidebar = () => {
   const navigate = useNavigate()
   const [isSideBarOpen , setIsSideBarOpen] = useState(true)
 
-  const logout = () => {
+  const logout = async () => {
 
-    setIsAuthenticated(false)
+    try {
+       ApiService.logout()
+       console.log("logout hogaya hau " )
+       setIsAuthenticated(false)
 
-    console.log("isAuthenticated hai?", isAuthenticated)
-    navigate("/")
-
+      navigate("/")
+    }catch{
+      console.log("logout nh hua ")
+    }
+    
   }
 
   return (

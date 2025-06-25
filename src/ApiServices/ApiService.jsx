@@ -54,4 +54,37 @@ export default class ApiService {
     });
     return response.data;
   }
+
+  static async getUserSessions(token) {
+    const response = await axios.get(`${this.BASE_URL}/sessions/user`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  }
+
+  static async accessTokenFromRefreshToken() {
+    const response = await axios.post(
+      `${this.BASE_URL}/auth/refresh`,
+      {},
+      {
+        withCredentials: true, // ✅ This sends the HTTP-only cookie
+      }
+    );
+    return response.data;
+  }
+
+  static async logout() {
+    const response = await axios.post(
+      `${this.BASE_URL}/auth/logout`,
+      {},
+      {
+        withCredentials: true, // ✅ This sends the HTTP-only cookie
+      }
+    );
+    return response.data;
+  }
+
 }

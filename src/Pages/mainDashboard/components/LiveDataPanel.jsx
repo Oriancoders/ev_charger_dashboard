@@ -10,7 +10,7 @@ import {
     const safeData = {
       voltage: isOn ? data.voltage : 0,
       current: isOn ? data.current : 0,
-      power: isOn ? data.power : 0,
+      power: isOn ? (data.voltage * data.current ): 0,
       temperature: data.temperature,
       status: isOn ? data.status : "OFF",
       vehicle: data.vehicle,
@@ -34,7 +34,7 @@ import {
           />
           <LiveCard
             label="Power"
-            value={`${safeData.power}kW`}
+            value={`${safeData.power.toFixed(2)}kW`}
             icon={<FaBolt />}
           />
           <LiveCard

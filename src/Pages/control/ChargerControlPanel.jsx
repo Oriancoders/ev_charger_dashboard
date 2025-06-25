@@ -11,17 +11,30 @@ const ChargerControlPanel = () => {
   // fech deviceId from URL params or context
   useEffect(() => {
     const fetchDevice = async () => {
-      console.log(authData.accessToken)
       try {
         const data = await ApiService.getDevices('DEVICE123', authData.accessToken);
         setDeviceData(data);
       } catch (error) {
-        console.error("Error fetching device:", error);
+        console.error("Error fetching device:asdasda", error);
       }
     };
 
     fetchDevice();
   }, []);
+
+  useEffect(() => {
+    const getToken = async () => {
+      try {
+        const data = await ApiService.accessTokenFromRefreshToken();
+        console.log("yai agaya hau data : acessToke : ", data.accessToken)
+      }
+      catch {
+        alert("No fetched refresseasd")
+      }
+    }
+
+    getToken();
+  }, [])
 
 
   const toggleSwitch = () => setIsOn(!isOn);

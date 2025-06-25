@@ -1,8 +1,9 @@
-import React, { Suspense, lazy, useEffect } from 'react';
+import React, { Suspense, lazy, useEffect, useState } from 'react';
 import './App.css';
 import { useGlobalContext } from './GlobalStates/GlobalState';
 import { Route, Routes } from 'react-router-dom';
 import DashboardSkeleton from './Skeletons/DahboardSkeleton';
+import ApiService from './ApiServices/ApiService';
 
 // Lazy-loaded pages
 const Login = lazy(() => import('./Pages/Login'));
@@ -21,11 +22,44 @@ const GenericSkeleton = () => (
 );
 
 function App() {
-  const { isAuthenticated } = useGlobalContext();
+  const { isAuthenticated, authData, setAuthData, setIsAuthenticated } = useGlobalContext();
+  const [authLoading, setAuthLoading] = useState(true); // 🆕
 
   useEffect(() => {
+    const getToken = async () => {
+      try {
+        const response = await ApiService.accessTokenFromRefreshToken();
+        if (response.statusCodeValue === 200) {
+        setAuthData({
+            id: response.body.id,
+            username: response.body.username,
+            email: response.body.email,
+            role: response.body.role,
+            accessToken: response.body.accessToken
+          });
+        console.log( "ye agaya data refresh kai baad " ,authData )
+        console.log ("reponse ..." , response)
 
-  } , [isAuthenticated])
+        setIsAuthenticated(true);
+        }
+      } catch {
+        setIsAuthenticated(false);
+      } finally {
+        setAuthLoading(false); // ✅ auth check done
+      }
+    };
+
+    getToken();
+  }, []);
+
+  if (authLoading) {
+    return (
+      <div className="h-screen w-screen flex items-center justify-center">
+        <p className="text-gray-500 text-xl">Checking authentication...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="overflow-x-hidden scrollbar-hidden text-[#1E1E2F]">
       <Routes>
@@ -34,7 +68,7 @@ function App() {
           element={
             !isAuthenticated ? (
               <Suspense fallback={<GenericSkeleton />}>
-              <Login />
+                <Login />
               </Suspense>
             ) : (
               <Suspense fallback={<DashboardSkeleton />}>
@@ -52,7 +86,7 @@ function App() {
               </Suspense>
             ) : (
               <Suspense fallback={<GenericSkeleton />}>
-              <Login />
+                <Login />
               </Suspense>
             )
           }
@@ -61,5 +95,6 @@ function App() {
     </div>
   );
 }
+
 
 export default App;
