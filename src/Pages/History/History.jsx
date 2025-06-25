@@ -12,10 +12,10 @@ const History = () => {
   const [toDate, setToDate] = useState(format(today, 'yyyy-MM-dd'));
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredData, setFilteredData] = useState([]);
-  const { ROLE, sessions, setSessions, authData, formatDate } = useGlobalContext()
+  const { ROLE, sessions, setSessions, authData, formatDate , formatTimeFromString } = useGlobalContext()
   // Fetch sessions from API
-  useEffect(() => {
-    const fetchSessions = async () => {
+
+  const fetchSessions = async () => {
       try {
         const data = await ApiService.getAllSessions(authData.accessToken);
 
@@ -26,14 +26,34 @@ const History = () => {
         }));
 
         setSessions(dataWithSerials);
-        console.log("Fetched sessions with serials:", dataWithSerials);
       } catch (error) {
         console.error("Error fetching device:", error);
       }
     };
+  
+    //api for fetching users session 
+  const fetchUserSessions = async () => {
+    try {
+      const data = await ApiService.getUserSessions(authData.accessToken);
 
-    fetchSessions();
-  }, []);
+      // Add serials like EV001, EV002, etc.
+      const dataWithSerials = data.map((session, index) => ({
+        ...session,
+        serial: `EV${(index + 1).toString().padStart(3, '0')}` // EV001, EV002...
+      }));
+
+      setSessions(dataWithSerials);
+    } catch (error) {
+      alert("Error fetching device:", error);
+    }
+  };
+  useEffect(() => {
+        if (authData.role == "USER") {
+            fetchUserSessions()
+        } else{
+            fetchSessions();
+        }
+      }, []);
 
 
 
@@ -144,8 +164,10 @@ const History = () => {
 
               return (
                 <tr key={index} className=" sm:text-sm text-xs">
-                  <td className="p-2 border-[1px] border-gray-300">
-                    {session.startTime ? format(parseISO(session.startTime), 'dd/MM/yyyy') : 'N/A'}
+                  <td className="p-2 border-[1px] border-gray-300 flex flex-col">
+                    <span>{session.startTime ? formatDate(session.startTime) : 'N/A'}</span>
+                    <span className='text-xs font-bold'>{session.startTime ? formatTimeFromString(session.startTime) : 'N/A'}</span>
+
                   </td>
                   <td className="p-2 border-[1px] border-gray-300">{session.serial}</td>
                   <td className="p-2 border-[1px] border-gray-300">{session.energyConsumed.toFixed(2)}</td>

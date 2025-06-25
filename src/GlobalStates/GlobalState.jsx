@@ -27,7 +27,7 @@ export const GlobalProvider = ({ children }) => {
         role: '',
         accessToken: ''
     });
-    
+
     const [sessions, setSessions] = useState([]); // For storing session data
     const [filteredSessionsData, setFilteredSessionsData] = useState([]);
 
@@ -41,6 +41,21 @@ export const GlobalProvider = ({ children }) => {
         const padded = (num) => num.toString().padStart(2, '0');
         return `${hours}:${padded(minutes)}:${padded(seconds)}`;
     };
+
+    const formatTimeFromString = (isoString) => {
+        if (!isoString) return "";
+
+        const date = new Date(isoString);
+        let hours = date.getHours();
+        const minutes = date.getMinutes();
+
+        const ampm = hours >= 12 ? "PM" : "AM";
+        hours = hours % 12 || 12; // convert 0 to 12
+        const paddedMinutes = minutes.toString().padStart(2, "0");
+
+        return `${hours}:${paddedMinutes} ${ampm}`;
+    };
+
 
 
 
@@ -90,7 +105,7 @@ export const GlobalProvider = ({ children }) => {
             authType, setAuthType,
             isAuthenticated, setIsAuthenticated,
             ROLE, setROLE,
-            formatTime,formatDate,
+            formatTime, formatDate,formatTimeFromString,
             authData, setAuthData,
             sessions, setSessions,
             filteredSessionsData, setFilteredSessionsData

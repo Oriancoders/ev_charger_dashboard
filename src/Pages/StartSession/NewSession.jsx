@@ -60,7 +60,7 @@ const NewSession = () => {
         try {
             const data = await ApiService.startSession(authData.accessToken)
             console.log("data jo start session par ara : ", data)
-            sessionStarted(true)
+            setSessionStarted(true)
         } catch (error) {
             console.log("nh hua startt", error)
         }

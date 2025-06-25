@@ -62,7 +62,10 @@ const Login = () => {
         setTimeout(() => setError(''), 5000);
       }
 
-    } else {
+    } 
+    //if switch is for sugnup 
+    else {
+      console.log("authtype .......... " , authType)
       const username = form.usernameSignup.value.trim();
       const email = form.emailSignup.value.trim();
       const password = form.passwordSignup.value;
@@ -70,6 +73,14 @@ const Login = () => {
       const phoneNumber = form.phoneNumberSignup.value.trim();
       const cnic = form.cnicSignup.value.trim();
 
+      if (!username || !email || !password || !confirmPassword || !phoneNumber || !cnic) {
+        setError("Please fill all input fields")
+        setTimeout(() => {
+          setError(null)
+        }, 5000)
+        return;
+      }
+      
       if (password !== confirmPassword) {
         setError("Passwords do not match");
         setTimeout(() => {
@@ -79,14 +90,9 @@ const Login = () => {
 
       }
 
-      if (!username || !email || !password || !confirmPassword || !phoneNumber || !cnic) {
-        setError("Please fill all input fields")
-        setTimeout(() => {
-          setError(null)
-        }, 5000)
-        return;
-      }
+      
       try {
+        console.log("user details ..." , username , email , password , confirmPassword , phoneNumber , cnic)
         setFetchMessage("Registoring the user.....")
         setIsFetching(true)
         const response = await ApiService.signupUser({ username, email, password, phoneNumber, cnic });
@@ -102,7 +108,7 @@ const Login = () => {
         setIsFetching(false)
         console.log("asds111");
         if (error.response && error.response.status === 400) {
-          setError("Invalid email and password!");
+          setError("cant sugnup ");
         }
         else {
           setError("Network Error");
