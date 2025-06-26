@@ -34,7 +34,7 @@ export const GlobalProvider = ({ children }) => {
 
 
 
-    const formatTime = (totalSeconds) => {
+    const formatTimeFromTotalSeconds = (totalSeconds) => {
         const hours = Math.floor(totalSeconds / 3600);
         const minutes = Math.floor((totalSeconds % 3600) / 60);
         const seconds = totalSeconds % 60;
@@ -72,15 +72,7 @@ export const GlobalProvider = ({ children }) => {
 
     }, []);
 
-    const mockLiveData = {
-        voltage: 240,
-        current: 80,
-        power: 2.1,
-        temperature: 32,
-        status: "Charging",
-        vehicle: false,
-        battery: 18,
-    };
+    
 
     // utils.js or globalState.js
     const formatDate = (isoString) => {
@@ -102,12 +94,11 @@ export const GlobalProvider = ({ children }) => {
             scrwidth,
             activeItem, setActiveItem,
             isOn, setIsOn,
-            mockLiveData,
             isLoggedIn, setIsLoggedIn,
             authType, setAuthType,
             isAuthenticated, setIsAuthenticated,
             ROLE, setROLE,
-            formatTime, formatDate, formatTimeFromString,
+            formatTimeFromTotalSeconds, formatDate, formatTimeFromString,
             authData, setAuthData,
             sessions, setSessions,
             filteredSessionsData, setFilteredSessionsData

@@ -4,9 +4,9 @@ import { useGlobalContext } from "../../GlobalStates/GlobalState";
 import { format, parseISO } from "date-fns";
 
 const RecentSession = () => {
-  const {ROLE, authData , sessions} = useGlobalContext()
+  const {ROLE, authData , sessions , formatTimeFromString} = useGlobalContext()
 
-  const session = sessions[0]; // latest session at top
+  const session = sessions[sessions.length - 1]; // latest session at top
 
   return (
     <div className="sm:p-6 p-3 bg-[#F4F6F8] min-h-screen overflow-y-scroll">
@@ -18,24 +18,25 @@ const RecentSession = () => {
           <h1 className="bg-[#1E1E2F] rounded-sm px-3 py-2 text-white sm:text-sm text-xs">{ROLE == "ADMIN" ? "ADMIN" : authData.username }</h1>
         </div>
 
-      <h2 className="text-[24px] font-bold mb-4 text-[#1E1E2F] italic">Most Recent Charge</h2>
-      <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2  gap-4">
+        <hr />
+
+      <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2  gap-4 my-4">
 
         
 
         {/* Start Time */}
         <InfoBox
           label="Start Time"
-          value={format(parseISO(session.startTime), "h:mm a")}
-          sub={format(parseISO(session.startTime), "dd/MMM/yyyy")}
+          value={formatTimeFromString(session.startTime)}
+          sub={formatTimeFromString(session.startTime)}
           color="text-green-600"
         />
 
         {/* End Time */}
         <InfoBox
           label="End Time"
-          value={format(parseISO(session.endTime), "h:mm a")}
-          sub={format(parseISO(session.endTime), "dd/MMM/yyyy")}
+          value={formatTimeFromString(session.endTime) || "Ongoing"}
+          sub={formatTimeFromString(session.endTime) || 0}
           color="text-red-500"
         />
 

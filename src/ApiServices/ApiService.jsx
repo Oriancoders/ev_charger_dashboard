@@ -89,31 +89,57 @@ export default class ApiService {
 
   //api for starting a new session
   static async startSession(token) {
-  const response = await axios.post(
-    `${this.BASE_URL}/sessions/start?deviceId=DEVICE123`,
-    {}, // empty body
-    {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
-  return response.data;
-}
+    const response = await axios.post(
+      `${this.BASE_URL}/sessions/start?deviceId=DEVICE123`,
+      {}, // empty body
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  }
 
-static async stopSession(token) {
-  const response = await axios.post(
-    `${this.BASE_URL}/sessions/stop?deviceId=DEVICE123`,
-    {}, // empty body
-    {
+  static async stopSession(token) {
+    const response = await axios.post(
+      `${this.BASE_URL}/sessions/stop?deviceId=DEVICE123`,
+      {}, // empty body
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  }
+
+  static async isCurrentlyCharging(token) {
+    const response = await axios.get(`${this.BASE_URL}/sessions/isAvailable?deviceId=DEVICE123`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-    }
-  );
-  return response.data;
-}
+    });
+    return response.data;
+  }
+
+  static async setDeviceStatus(token , status) {
+    const response = await axios.post(
+       `${this.BASE_URL}/sessions/setDeviceAvailability?deviceId=DEVICE123&available=${status}`,
+      {}, // empty body
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  }
+
+
 
 }

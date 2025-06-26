@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import html2canvas from 'html2canvas';
 
 import {
     FaBolt,
@@ -13,10 +12,9 @@ import {
 } from "react-icons/fa";
 import { useGlobalContext } from '../../GlobalStates/GlobalState';
 import ApiService from '../../ApiServices/ApiService';
-import { isValid } from 'date-fns';
 
 const NewSession = () => {
-    const { formatTime, authData } = useGlobalContext()
+    const { formatTimeFromString, authData } = useGlobalContext()
     const [sessionName, setSessionName] = useState('');
     const [vehicleName, setVehicleName] = useState('');
     const [portType, setPortType] = useState('');
@@ -25,13 +23,27 @@ const NewSession = () => {
     const [isDeviceConnected, setIsDeviceConnected] = useState(true); // true by default
     const [sessionStarted, setSessionStarted] = useState(false);
     const [sessionEnded, setSessionEnded] = useState(false);
+    const [IsAvailable , setIsAvailable] = useState(null)
 
     const [energy, setEnergy] = useState(0);
     const [temperature, setTemperature] = useState(30);
     const [cost, setCost] = useState(0);
     const [time, setTime] = useState(0);
 
-    const isValid = false
+    
+    const checkStationAvailable = async () => {
+        try{
+            const data = await ApiService.isCurrentlyCharging(authData.accessToken);
+            console.log("data hai avaialable ka " ,data)
+            setIsAvailable(data.isAvailable)
+        }catch (error){
+            console.log("nh aya data " , error)
+        }
+    }
+    useEffect(() => {
+        checkStationAvailable()
+        console.log("hai available ? : " , IsAvailable)
+    } , [sessionStarted ,IsAvailable])
 
     useEffect(() => {
         let interval;
@@ -63,7 +75,8 @@ const NewSession = () => {
             console.log("data jo start session par ara : ", data)
             setSessionStarted(true)
         } catch (error) {
-            console.log("nh hua startt", error)
+            alert("nh hua startt", error)
+            setIsAvailable(false)
         }
     };
 
@@ -80,17 +93,7 @@ const NewSession = () => {
 
     };
 
-    const handleScreenshotDownload = async () => {
-        const element = document.getElementById("billing-summary");
-
-        if (!element) return;
-        console.log("element is : ", element.innerHTML)
-        const canvas = await html2canvas(element);
-        const link = document.createElement("a");
-        link.download = "charging_session_summary.png";
-        link.href = canvas.toDataURL("image/png");
-        link.click();
-    };
+    
 
 
     return (
@@ -105,8 +108,8 @@ const NewSession = () => {
                 <>
                 <h1 className='text-3xl font-bold my-6 text-center'>Welcom to EV Station 01</h1>
 
-                <div className={`text-5xl font-bold ${isValid ? 'bg-green-500' : 'bg-red-500'} text-white text-center p-20 rounded-2xl`}>
-                    {isValid ? 'Station is currently Free' : 'Station is currently Busy'}
+                <div className={`text-5xl font-bold ${IsAvailable ? 'bg-green-500' : 'bg-red-500'} text-white text-center p-20 rounded-2xl`}>
+                    {IsAvailable ? 'Station is currently Free' : 'Station is currently Busy'}
                 </div>
                  <form className=" p-3 w-full ">
 
@@ -170,7 +173,7 @@ const NewSession = () => {
                         <div className="bg-white p-4 rounded min-h-36 flex flex-col justify-evenly items-center gap-y-4">
                             <FaClock className='text-5xl  bg-[#AFAFAF]/20 rounded-full p-2 text-blue-500' />
                             <h1 className='font-bold text-lg'>Time Taken</h1>
-                            <strong>{formatTime(time)}</strong>
+                            <strong>{formatTimeFromString(time)}</strong>
 
                         </div>
 

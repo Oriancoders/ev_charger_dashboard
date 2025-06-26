@@ -1,0 +1,7 @@
+
+.notification{
+    box-shadow: 0px 0px 3px rgba(0, 0, 2, 0.2);
+}
+.notification:hover{
+    box-shadow: 0px 0px 10px  rgba(0, 0, 0, 0.2);
+}

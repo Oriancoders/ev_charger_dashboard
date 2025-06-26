@@ -3,7 +3,7 @@ import { FaBell, FaBatteryHalf, FaExclamationTriangle, FaTimesCircle, FaExchange
 import { format } from "date-fns";
 import notifications from "../../MockData/notifications.json";
 import { useGlobalContext } from "../../GlobalStates/GlobalState";
-
+import './notification.css'
 
 const iconMap = {
     Warning: <FaExclamationTriangle className="text-red-500 sm:w-5 w-3 sm:h-3 h-3" />,
@@ -30,7 +30,7 @@ const Notifications = () => {
                 {notifications.map((notification, idx) => (
                     <div
                         key={idx}
-                        className="flex  text-sm justify-between gap-6 items-center bg-white shadow-md rounded-xl px-4 py-2 "
+                        className="flex  text-sm justify-between gap-6 items-center bg-white notification rounded-xl px-4 py-2 transition-all "
                     >
                         <div className="sm:w-40 w-20 italic font-semibold flex items-center justify-between gap-2  ">
                         <h1 className="">{notification.type}</h1> 
