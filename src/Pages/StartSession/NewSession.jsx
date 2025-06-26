@@ -13,6 +13,7 @@ import {
 } from "react-icons/fa";
 import { useGlobalContext } from '../../GlobalStates/GlobalState';
 import ApiService from '../../ApiServices/ApiService';
+import { isValid } from 'date-fns';
 
 const NewSession = () => {
     const { formatTime, authData } = useGlobalContext()
@@ -30,7 +31,7 @@ const NewSession = () => {
     const [cost, setCost] = useState(0);
     const [time, setTime] = useState(0);
 
-    const isFormValid = sessionName && vehicleName && portType && maxBudget && paymentMethod && isDeviceConnected;
+    const isValid = false
 
     useEffect(() => {
         let interval;
@@ -101,67 +102,28 @@ const NewSession = () => {
                 <h1 className="bg-[#1E1E2F] rounded-sm px-3 py-2 text-white sm:text-lg text-xs">{authData.username}</h1>
             </div>
             {!sessionStarted && !sessionEnded && (
-                <form className=" p-3 w-full ">
+                <>
+                <h1 className='text-3xl font-bold my-6 text-center'>Welcom to EV Station 01</h1>
 
-                    <div className="grid sm:grid-cols-2 grid-cols-1 w-full  gap-4 ">
-                        <div className="flex flex-col gap-y-2 col-span-1 ">
-                            <label className='text-xl italic font-semibold' >Session Name</label>
-                            <input
-                                type="text"
-                                placeholder="Enter Session Name"
-                                value={sessionName}
-                                onChange={(e) => setSessionName(e.target.value)}
-                                className=" bg-white shadow text-sm p-2 focus:border-blue-700 border-[1px] w-full border-transparent  rounded outline-none text-[16px]"
-                            />
-                        </div>
+                <div className={`text-5xl font-bold ${isValid ? 'bg-green-500' : 'bg-red-500'} text-white text-center p-20 rounded-2xl`}>
+                    {isValid ? 'Station is currently Free' : 'Station is currently Busy'}
+                </div>
+                 <form className=" p-3 w-full ">
 
+                    <div className="grid  grid-cols-1 w-full  gap-4 ">
+     
                         <div className="flex flex-col gap-y-2 col-span-1">
-                            <label className='text-xl italic font-semibold' >Vehicle Name</label>
-                            <input
-                                type="text"
-                                placeholder="Enter Vehicle Name"
-                                value={vehicleName}
-                                onChange={(e) => setVehicleName(e.target.value)}
-                                className=" bg-white shadow text-sm  p-2 focus:border-blue-700 border-[1px] w-full border-transparent  rounded outline-none text-[16px]"
-                            />
-                        </div>
-
-                        <div className="flex flex-col gap-y-2 col-span-1">
-                            <label className='text-xl italic font-semibold' >Port Type</label>
-                            <select
-                                value={portType}
-                                onChange={(e) => setPortType(e.target.value)}
-                                className="bg-white shadow text-sm p-2 focus:border-blue-700 border-[1px] w-full border-transparent  rounded outline-none text-[16px]"
-                            >
-                                <option value="">Select Port Type</option>
-                                <option value="Type 2">Type 2</option>
-                                <option value="CS2">CS2</option>
-                            </select>
-                        </div>
-
-                        <div className="flex flex-col gap-y-2 col-span-1">
-                            <label className='text-xl italic font-semibold' >Max Budget <span className='text-black/20 text-xs'>(Session will automatically stop when budget reached)</span></label>
+                            <label className='text-xl italic font-semibold' >Enter Your Max Budget <span className='text-black/50 text-xs'>(Session will automatically stop when budget reached)</span></label>
                             <input
                                 type="number"
-                                placeholder="Enter Vehicle Name"
+                                placeholder="Maximum Budget (eg : 40000)"
                                 value={maxBudget}
                                 onChange={(e) => setMaxBudget(e.target.value)}
                                 className=" bg-white shadow text-sm p-2 focus:border-blue-700 border-[1px] w-full border-transparent  rounded outline-none text-[16px]"
                             />
                         </div>
 
-                        <div className="flex flex-col gap-y-2 col-span-1">
-                            <label className='text-xl italic font-semibold' >Payment Method</label>
-                            <select
-                                value={paymentMethod}
-                                onChange={(e) => setPaymentMethod(e.target.value)}
-                                className=" bg-white shadow text-sm   p-2 focus:border-blue-700 border-[1px] w-full border-transparent  rounded outline-none text-[16px]"
-                            >
-                                <option value="">Select Payment Method</option>
-                                <option value="Card">Card</option>
-                                <option value="Paypal">Paypal</option>
-                            </select>
-                        </div>
+                        
                     </div>
 
                     <div
@@ -174,32 +136,21 @@ const NewSession = () => {
 
                     <button
                         type="button"
-                        disabled={!isFormValid}
                         onClick={handleStart}
-                        className={`mt-6 w-full p-3 rounded text-white font-semibold transition ${isFormValid ? 'bg-green-600 hover:bg-green-700' : 'bg-gray-300 cursor-not-allowed'
-                            }`}
+                        className={`mt-6 w-full p-3 rounded text-white font-semibold transition bg-green-600 hover:bg-green-700  `}
                     >
                         Start Session
                     </button>
 
-                    <button
-                        type="button"
-                        onClick={handleStop}
-                        className={`mt-6 w-full p-3 rounded text-white font-semibold transition bg-red-500 hover:bg-red-500'
-                            }`}
-                    >
-                        Stop Session
-                    </button>
+                    
                 </form>
+                </>
             )}
 
             {sessionStarted && !sessionEnded && (
                 <div className=" p-4  ">
                     <h2 className="text-2xl font-semibold mb-4">Charging Session</h2>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                        <div className="shadow p-2 bg-white rounded">Session name: <strong>{sessionName}</strong></div>
-                        <div className="shadow p-2 bg-white rounded">Vehicle name: <strong>{vehicleName}</strong></div>
-                        <div className="shadow p-2 bg-white rounded">Port Type: <strong>{portType}</strong></div>
                         <div className="shadow p-2 bg-white rounded">Max Budget: <strong>{maxBudget}</strong> PKR</div>
                     </div>
 

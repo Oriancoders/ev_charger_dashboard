@@ -10,11 +10,14 @@ import Notifications from "./Notifcations/Notifications";
 import { RxDoubleArrowLeft } from "react-icons/rx";
 import NewSession from "./StartSession/NewSession";
 import ApiService from "../ApiServices/ApiService";
+import useTelemetrySocket from "../hook/useTelemetrySocket";
 
 const MainLayout = () => {
     const { activeItem, scrwidth , authData , setSessions } = useGlobalContext()
     const [isSideBarOpen , setIsSideBarOpen] = useState(false)
     
+    const telemetryData = useTelemetrySocket("DEVICE123", authData.accessToken);
+    console.log("Telemetry Data:", telemetryData);
     const fetchSessions = async () => {
           try {
             const data = await ApiService.getAllSessions(authData.accessToken);
@@ -26,7 +29,6 @@ const MainLayout = () => {
             }));
     
             setSessions(dataWithSerials);
-            console.log("Fetched sessions with serials:", dataWithSerials);
           } catch (error) {
             console.error("Error fetching device:", error);
           }

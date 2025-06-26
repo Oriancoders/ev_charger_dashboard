@@ -13,6 +13,7 @@ const ChargerControlPanel = () => {
     const fetchDevice = async () => {
       try {
         const data = await ApiService.getDevices('DEVICE123', authData.accessToken);
+        console.log( "the aisi ki tesi wala daata live " ,data)
         setDeviceData(data);
       } catch (error) {
         console.error("Error fetching device:asdasda", error);

@@ -1,4 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
+import useTelemetrySocket from '../hook/useTelemetrySocket';
 
 // Create a new context
 const GlobalContext = createContext();
@@ -93,6 +94,7 @@ export const GlobalProvider = ({ children }) => {
         return `${day}-${month}-${year}`; // e.g. "18-May-2025"
     };
 
+    
 
     return (
         <GlobalContext.Provider value={{
@@ -105,7 +107,7 @@ export const GlobalProvider = ({ children }) => {
             authType, setAuthType,
             isAuthenticated, setIsAuthenticated,
             ROLE, setROLE,
-            formatTime, formatDate,formatTimeFromString,
+            formatTime, formatDate, formatTimeFromString,
             authData, setAuthData,
             sessions, setSessions,
             filteredSessionsData, setFilteredSessionsData

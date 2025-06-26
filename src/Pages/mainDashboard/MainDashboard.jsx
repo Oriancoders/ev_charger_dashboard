@@ -27,13 +27,13 @@ const MainDashboard = () => {
   
   const telemetryData = useTelemetrySocket("DEVICE123",authData.accessToken);
   const isOn = true;
-  console.log("Telemetry Data:", telemetryData);
+  console.log("Telemetry Data: main kai ander", telemetryData);
 
   
   useEffect(() => {
     // This effect runs when telemetryData changes
     if (telemetryData) {
-      console.log("Updated Telemetry Data:", telemetryData);
+      console.log("Updated Telemetry Data: mainm mai", telemetryData);
     }
   }, [telemetryData]);
   return (
