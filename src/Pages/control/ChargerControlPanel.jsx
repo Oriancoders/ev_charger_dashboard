@@ -52,9 +52,9 @@ const ChargerControlPanel = () => {
     <div className="sm:p-6 p-3  rounded-xl shadow-lg space-y-6  h-screen overflow-y-scroll">
 
       <div className="w-full flex justify-between items-center  font-bold mb-3  px-3">
-        <FaBolt className="sm:text-4xl text-xl" />
-        <h2 className="sm:text-[24px] text-lg font-bold  text-[#1E1E2F] italic">Controm Panel</h2>
-        <h1 className="bg-[#1E1E2F] rounded-sm px-3 py-2 text-white sm:text-lg text-xs">ADMIN</h1>
+        <FaBolt className="md:text-2xl text-xl" />
+        <h2 className="md:text-[24px] sm:text-lg text-sm font-bold  text-[#1E1E2F] italic">Controm Panel</h2>
+        <h1 className="bg-[#1E1E2F] rounded-sm px-3 py-2 text-white sm:text-sm text-xs">ADMIN</h1>
       </div>
 
       <div className="w-full flex justify-between items-end mt-8 px-2">

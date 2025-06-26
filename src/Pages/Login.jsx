@@ -14,6 +14,7 @@ const Login = () => {
   const [isFetching, setIsFetching] = useState(false)
   const [fetchMessage , setFetchMessage] = useState("")
   const navigate = useNavigate();
+  const inputClassName = "w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200 text-sm"
 
   const handleAuthentication = async (e) => {
     e.preventDefault();
@@ -123,16 +124,17 @@ const Login = () => {
 
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#c3dafe] to-[#ebf4ff] animate-fadeIn py-8">
+    <div className="min-h-screen flex items-center justify-center  gap-y-6 bg-gradient-to-br from-[#c3dafe] to-[#ebf4ff] animate-fadeIn py-8">
+      
       <motion.div
         layout
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
-        className="bg-linear-150 from-white via-5% to-blue-100   p-8 rounded-2xl space-y-4 shadow-2xl w-[90%] max-w-md transition-all duration-100 ease-in-out hover:shadow-blue-200 ">
+        className="bg-linear-150 from-white via-5% to-blue-100   p-4 rounded-2xl space-y-4 shadow-2xl w-[90%] max-w-md transition-all duration-100 ease-in-out hover:shadow-blue-200 ">
         <h1 className="text-5xl font-extrabold text-center text-blue-600  tracking-wide">
           EV Charger
-        </h1>
+      </h1>
 
 
 
@@ -165,22 +167,22 @@ const Login = () => {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.1 }}
               transition={{ duration: 0.2 }}
-              className="space-y-6 text-center"
+              className="space-y-3 text-center"
               onSubmit={handleAuthentication}
             >
-              {error && <p className='text-red-600 my-3'>{error}</p>}
+              {error && <p className='text-red-600 my-4 text-sm'>{error}</p>}
 
               {isFetching ? (
 
                 <div className="w-full flex justify-center items-center text-xl min-h-32">
                   {fetchMessage}
                 </div>
-              ) : (
+              ) : ( 
                 <>
                   <input
                     type='text'
                     name="emailLogin"
-                    className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200'
+                    className={inputClassName}
                     placeholder='User Name'
                     maxLength={20}
                   />
@@ -189,7 +191,7 @@ const Login = () => {
                     <input
                       type={isPass ? 'text' : 'password'}
                       name="passwordLogin"
-                      className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200'
+                      className={inputClassName}
                       placeholder='Enter your password'
                       maxLength={20}
                     />
@@ -199,7 +201,7 @@ const Login = () => {
                   </div>
 
 
-                  <button type='submit' className='w-48 cursor-pointer bg-linear-to-b from-[#0A86F0] via-[#0A86F0] to-[#3870AB] text-white py-3 rounded-full font-semibold hover:bg-blue-700 transition-all duration-200'>
+                  <button type='submit' className='w-48 cursor-pointer bg-linear-to-b from-[#0A86F0] via-[#0A86F0] to-[#3870AB] text-white py-2 rounded-full font-semibold hover:bg-blue-700 transition-all duration-200 text-sm'>
                     Login
                   </button>
                 </>
@@ -212,10 +214,10 @@ const Login = () => {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.1 }}
               transition={{ duration: 0.2 }}
-              className="space-y-6 text-center"
+              className="space-y-3 text-center"
               onSubmit={handleAuthentication}
             >
-              {error && <p className='text-red-600 my-3'>{error}</p>}
+              {error && <p className='text-red-600 my-3 text-sm'>{error}</p>}
 
               {isFetching ? (
                 <div className="w-full flex justify-center items-center text-xl min-h-32">
@@ -225,14 +227,14 @@ const Login = () => {
                 <>
                   <input
                     type='text'
-                    className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200'
+                    className={inputClassName}
                     placeholder='User Name'
                     maxLength={20}
                     name="usernameSignup"
                   />
                   <input
                     type='email'
-                    className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200'
+                    className={inputClassName}
                     placeholder='Email Address'
                     maxLength={40}
                     name="emailSignup"
@@ -240,14 +242,14 @@ const Login = () => {
 
                   <input
                     type='number'
-                    className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200'
+                    className={inputClassName}
                     placeholder='Phone Number'
                     maxLength={11}
                     name="phoneNumberSignup"
                   />
                   <input
                     type='text'
-                    className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200'
+                    className={inputClassName}
                     placeholder='CNIC Number'
                     maxLength={13}
                     name="cnicSignup"
@@ -256,7 +258,7 @@ const Login = () => {
                     <input
                       type={isPass ? 'text' : 'password'}
                       name="passwordSignup"
-                      className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200'
+                      className={inputClassName}
                       placeholder='Enter your password'
                       maxLength={20}
                     />
@@ -269,7 +271,7 @@ const Login = () => {
                     <input
                       type={isPass ? 'text' : 'password'}
                       name="confirmPasswordSignup"
-                      className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200'
+                      className={inputClassName}
                       placeholder='Enter your Confirm password'
                       maxLength={20}
                     />
@@ -278,7 +280,7 @@ const Login = () => {
                     </span>
                   </div>
 
-                  <button disabled={isFetching ? true : false} className='w-48 cursor-pointer bg-linear-to-b from-[#0A86F0] via-[#0A86F0] to-[#3870AB] text-white py-3 rounded-full font-semibold hover:bg-blue-700 transition-all duration-200'>
+                  <button disabled={isFetching ? true : false} className='w-48 cursor-pointer bg-linear-to-b from-[#0A86F0] via-[#0A86F0] to-[#3870AB] text-white py-2 rounded-full font-semibold hover:bg-blue-700 transition-all duration-200'>
                     Signup
                   </button>
                 </>

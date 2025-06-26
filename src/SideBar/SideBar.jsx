@@ -69,7 +69,7 @@ const Sidebar = () => {
         </nav>
       </div>
 
-      <button onClick={() => logout()} className="m-4 justify-between flex items-center gap-2 bg-[#1E1E2F] text-white px-4 py-2 rounded-lg shadow hover:opacity-90 cursor-pointer">
+      <button onClick={() => logout()} className="m-4 justify-between flex items-center gap-2 bg-[#1E1E2F] text-white px-4 py-2 rounded-lg shadow hover:opacity-90 cursor-pointer text-sm">
         Logout <FaSignOutAlt />
       </button>
     </div>
@@ -84,8 +84,8 @@ const NavItem = ({ icon, label, active, onClick }) => (
         : "text-[#1E1E2F] bg-white hover:bg-gray-200"
       }`}
   >
-    <span className="font-medium sm:text-lg text-xs">{label}</span>
-    <span className="text-lg">{icon}</span>
+    <span className="font-medium sm:text-sm text-xs">{label}</span>
+    <span className="text-sm">{icon}</span>
   </div>
 );
 

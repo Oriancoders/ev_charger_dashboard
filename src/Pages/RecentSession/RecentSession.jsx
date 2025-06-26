@@ -12,10 +12,10 @@ const RecentSession = () => {
     <div className="sm:p-6 p-3 bg-[#F4F6F8] min-h-screen overflow-y-scroll">
 
         <div className="w-full flex justify-between items-center  font-bold mb-3  px-3">
-          <FaClock className="sm:text-4xl text-xl" />
-          <h2 className="sm:text-[24px] text-lg font-bold  text-[#1E1E2F] italic">Recent Session</h2>
+          <FaClock className="sm:text-2xl text-xl" />
+          <h2 className="md:text-[24px] sm:text-lg text-sm font-bold text-[#1E1E2F] italic">Recent Session</h2>
 
-          <h1 className="bg-[#1E1E2F] rounded-sm px-3 py-2 text-white sm:text-lg text-xs">{ROLE == "ADMIN" ? "ADMIN" : authData.username }</h1>
+          <h1 className="bg-[#1E1E2F] rounded-sm px-3 py-2 text-white sm:text-sm text-xs">{ROLE == "ADMIN" ? "ADMIN" : authData.username }</h1>
         </div>
 
       <h2 className="text-[24px] font-bold mb-4 text-[#1E1E2F] italic">Most Recent Charge</h2>

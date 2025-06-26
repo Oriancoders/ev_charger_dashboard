@@ -94,31 +94,31 @@ const History = () => {
     <div className="sm:p-6 p-3 bg-[#F4F6F8] h-screen overflow-y-scroll">
 
       <div className="w-full flex justify-between items-center  font-bold mb-3  px-3">
-        <FaHistory className="sm:text-4xl text-xl" />
-        <h2 className="sm:text-[24px] text-lg font-bold  text-[#1E1E2F] italic">History</h2>
-        <h1 className="bg-[#1E1E2F] rounded-sm px-3 py-2 text-white sm:text-lg text-xs">{ROLE == "ADMIN" ? "ADMIN" : authData.username}</h1>
+        <FaHistory className="md:text-2xl text-xl" />
+        <h2 className=" md:text-[24px] sm:text-lg text-sm font-bold  text-[#1E1E2F] italic">History</h2>
+        <h1 className="bg-[#1E1E2F] rounded-sm px-3 py-2 text-white sm:text-sm text-xs">{ROLE == "ADMIN" ? "ADMIN" : authData.username}</h1>
       </div>
 
 
       {/* Filter bar */}
-      <div className="bg-white shadow rounded-2xl p-3 flex lg:flex-row flex-col flex-wrap justify-between lg:items-center gap-4 mb-4">
-        <h1 className="text-lg font-bold">Filters</h1>
-        <div className='sm:text-[16px] text-xs'>
+      <div className="bg-white shadow rounded p-2  flex lg:flex-row flex-col flex-wrap justify-between lg:items-center gap-4 mb-4">
+        <h1 className="text-sm font-bold">Filters</h1>
+        <div className='sm:text-sm text-xs'>
           <label className="mr-2 font-medium">From Date:</label>
           <input
             type="date"
             value={fromDate}
             onChange={e => setFromDate(e.target.value)}
-            className="border rounded-2xl px-2 py-1"
+            className="border rounded-2xl px-2 py-1 cursor-pointer"
           />
         </div>
-        <div className='sm:text-[16px] text-xs'>
+        <div className='sm:text-sm text-xs'>
           <label className="mr-2 font-medium">To Date:</label>
           <input
             type="date"
             value={toDate}
             onChange={e => setToDate(e.target.value)}
-            className="border rounded-2xl px-2 py-1"
+            className="border rounded-2xl px-2 py-1 cursor-pointer"
           />
         </div>
       </div>
@@ -138,14 +138,14 @@ const History = () => {
           placeholder="Search By Session Id"
           value={searchTerm}
           onChange={e => setSearchTerm(e.target.value)}
-          className="flex-1 px-3 py-2 focus:border-blue-700 border-[1px] w-full border-transparent  rounded outline-none text-[16px]"
+          className="flex-1  p-2 focus:border-blue-700 border-[1px] w-full border-transparent  rounded outline-none text-sm"
         />
       </div>
 
       {/* Table */}
       <div className=" bg-white ">
         <table className="w-full table-auto ">
-          <thead className="bg-gray-200 sm:text-lg text-sm">
+          <thead className="bg-gray-200 sm:text-sm text-xs">
             <tr>
               <th className="p-2 border-[1px] border-gray-400">Date</th>
               <th className="p-2 border-[1px] border-gray-400">Session ID</th>
@@ -190,7 +190,7 @@ const History = () => {
 
 const SummaryCard = ({ title, value }) => (
   <div className="bg-white  shadow p-4 flex flex-col justify-between rounded-2xl gap-y-4 sm:min-h-36 min-h-20">
-    <div className="text-lg font-bold italic">{title}</div>
+    <div className="text-sm font-bold italic">{title}</div>
     <div className="sm:text-xl text-xs font-bold text-blue-600">{value}</div>
   </div>
 );

@@ -96,10 +96,10 @@ const NewSession = () => {
     return (
         <div className="sm:p-6 p-3 bg-[#F4F6F8] h-screen overflow-y-scroll">
             <div className="w-full flex justify-between items-center  font-bold mb-3  px-3">
-                <FaPlus className="sm:text-4xl text-xl" />
-                <h2 className="sm:text-[24px] text-lg font-bold  text-[#1E1E2F] italic">Activate Session</h2>
+                <FaPlus className="sm:text-2xl text-xl" />
+                <h2 className="md:text-[24px] sm:text-lg text-sm font-bold text-[#1E1E2F] italic">Activate Session</h2>
 
-                <h1 className="bg-[#1E1E2F] rounded-sm px-3 py-2 text-white sm:text-lg text-xs">{authData.username}</h1>
+                <h1 className="bg-[#1E1E2F] rounded-sm px-3 py-2 text-white sm:text-md text-xs">{authData.username}</h1>
             </div>
             {!sessionStarted && !sessionEnded && (
                 <>

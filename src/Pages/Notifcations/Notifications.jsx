@@ -20,17 +20,17 @@ const Notifications = () => {
         <div className="sm:p-6 p-3 bg-[#F4F6F8] h-screen overflow-y-scroll">
             
                     <div className="w-full flex justify-between items-center  font-bold mb-3  px-3">
-                      <FaBell className="sm:text-4xl text-xl" />
-                      <h2 className="sm:text-[24px] text-lg font-bold  text-[#1E1E2F] italic">Notifications</h2>
+                      <FaBell className="sm:text-2xl text-xl" />
+                      <h2 className="md:text-[24px] sm:text-lg text-sm font-bold text-[#1E1E2F] italic">Notifications</h2>
             
-                      <h1 className="bg-[#1E1E2F] rounded-sm px-3 py-2 text-white sm:text-lg text-xs">{ROLE == "ADMIN" ? "ADMIN" : authData.username }</h1>
+                      <h1 className="bg-[#1E1E2F] rounded-sm px-3 py-2 text-white sm:text-md text-xs">{ROLE == "ADMIN" ? "ADMIN" : authData.username }</h1>
                     </div>
                  
             <div className="space-y-4">
                 {notifications.map((notification, idx) => (
                     <div
                         key={idx}
-                        className="flex  text-lg justify-between gap-6 items-center bg-white shadow-md rounded-xl px-4 py-2 "
+                        className="flex  text-sm justify-between gap-6 items-center bg-white shadow-md rounded-xl px-4 py-2 "
                     >
                         <div className="sm:w-40 w-20 italic font-semibold flex items-center justify-between gap-2  ">
                         <h1 className="">{notification.type}</h1> 
