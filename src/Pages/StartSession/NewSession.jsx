@@ -12,6 +12,7 @@ import {
 } from "react-icons/fa";
 import { useGlobalContext } from '../../GlobalStates/GlobalState';
 import ApiService from '../../ApiServices/ApiService';
+import useTelemetrySocket from '../../hook/useTelemetrySocket';
 
 const NewSession = () => {
     const { formatTimeFromString, authData } = useGlobalContext()
@@ -33,6 +34,8 @@ const NewSession = () => {
     const [cost, setCost] = useState(0);
     const [time, setTime] = useState(0);
 
+      const telemetryData = useTelemetrySocket("DEVICE123", authData.accessToken);
+    
 
     const checkStationAvailable = async () => {
         try {
@@ -116,6 +119,11 @@ const NewSession = () => {
         }
 
     };
+
+    const handleReset =  ( ) => {
+        setSessionStarted(false);
+        setSessionEnded(false);
+    }
 
     useEffect(() => {
         CheckDeviceInService()
@@ -222,13 +230,13 @@ const NewSession = () => {
                         <div className="bg-white p-4 rounded min-h-36 flex flex-col justify-evenly items-center gap-y-4">
                             <FaBolt className='text-5xl bg-[#AFAFAF]/20 rounded-full p-2 text-blue-500' />
                             <h1 className='font-bold text-lg'>Energy</h1>
-                            <strong>{energy} kWh</strong>
+                            <strong>{(telemetryData.voltage *  telemetryData.current).toFixed(2) || 0} kWh</strong>
 
                         </div>
                         <div className="bg-white p-4 rounded min-h-36 flex flex-col justify-evenly items-center gap-y-4">
                             <FaThermometerHalf className='text-5xl  bg-[#AFAFAF]/20 rounded-full p-2 text-blue-500' />
                             <h1 className='font-bold text-lg'>Temprature</h1>
-                            <strong>{temperature}°C</strong>
+                            <strong>{telemetryData.temperature || 0 }°C</strong>
                         </div>
 
                         <div className="bg-white p-4 rounded min-h-36 flex flex-col justify-evenly items-center gap-y-4">
@@ -260,22 +268,19 @@ const NewSession = () => {
                     <p className="text-gray-600 mb-4">Here are the billing details for your charging session.</p>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-gray-700">
-                        <div><strong>User:</strong> Default User</div>
-                        <div><strong>Session Name:</strong> {sessionName}</div>
-                        <div><strong>Vehicle Name:</strong> {vehicleName}</div>
-                        <div><strong>Port Type:</strong> {portType}</div>
-                        <div><strong>Max Budget:</strong> {maxBudget} PKR</div>
-                        <div><strong>Energy Consumed:</strong> {energy} kWh</div>
-                        <div><strong>Temperature:</strong> {temperature}°C</div>
-                        <div><strong>Time Taken:</strong> {formatTime(time)}</div>
+                        <div><strong>User:</strong> {accessData.username || "defaultuser"}</div>
+                        {/* <div><strong>Max Budget:</strong> {maxBudget} PKR</div> */}
+                        <div><strong>Energy Consumed:</strong> 30 kWh</div>
+                        <div><strong>Temperature:</strong> {telemetryData.temperature}°C</div>
+                        <div><strong>Time Taken:</strong> {formatTimeFromString(time)}</div>
                         <div><strong>Total Cost:</strong> {cost} PKR</div>
                     </div>
 
                     <button
-                        onClick={handleScreenshotDownload}
+                        onClick={handleReset}
                         className="mt-6 px-5 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded w-full"
                     >
-                        📥 Pay Now & Download Invoice
+                        📥 Go to main page
                     </button>
                 </div>
             )}
