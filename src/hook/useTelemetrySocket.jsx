@@ -9,13 +9,11 @@ const useTelemetrySocket = (deviceId, token) => {
   useEffect(() => {
     if (!deviceId || !token) return;
 
-    const socket = new SockJS("http://localhost:8080/ws");
+    const socket = new SockJS(`https://evbackend-gayt.onrender.com/ws?token=${encodeURIComponent(token)}`);
+
 
     const client = new Client({
       webSocketFactory: () => socket,
-      connectHeaders: {
-        Authorization: `Bearer ${token}`,
-      },
       debug: function (str) {
         console.log("📘 STOMP debug:", str);
       },
