@@ -15,7 +15,7 @@ import ApiService from '../../ApiServices/ApiService';
 import useTelemetrySocket from '../../hook/useTelemetrySocket';
 
 const NewSession = () => {
-    const { formatTimeFromString, authData } = useGlobalContext()
+    const { formatTimeFromString, authData , formatTimeFromTotalSeconds  } = useGlobalContext()
     const [sessionName, setSessionName] = useState('');
     const [vehicleName, setVehicleName] = useState('');
     const [portType, setPortType] = useState('');
@@ -34,8 +34,8 @@ const NewSession = () => {
     const [cost, setCost] = useState(0);
     const [time, setTime] = useState(0);
 
-      const telemetryData = useTelemetrySocket("DEVICE123", authData.accessToken);
-    
+    const telemetryData = useTelemetrySocket("DEVICE123", authData.accessToken);
+
 
     const checkStationAvailable = async () => {
         try {
@@ -76,10 +76,9 @@ const NewSession = () => {
         let interval;
         if (sessionStarted && !sessionEnded) {
             interval = setInterval(() => {
-                setEnergy((prev) => +(prev + Math.random() * 0.5).toFixed(2));
-                setTemperature((prev) => +(prev + (Math.random() * 2 - 1)).toFixed(1));
+                
                 setCost((prevCost) => {
-                    const newCost = +(prevCost + Math.random() * 100).toFixed(0);
+                    const newCost = +(prevCost + 1 ).toFixed(0);
 
                     // Auto-stop session if budget reached
                     if (Number(maxBudget) > 0 && newCost >= Number(maxBudget)) {
@@ -120,7 +119,7 @@ const NewSession = () => {
 
     };
 
-    const handleReset =  ( ) => {
+    const handleReset = () => {
         setSessionStarted(false);
         setSessionEnded(false);
     }
@@ -163,7 +162,7 @@ const NewSession = () => {
                         </div>
                     )}
 
-                    {status == "stationBusy" && isDeviceAvailable == true && isStationAvailable == false(
+                    {status == "stationBusy" && isDeviceAvailable == true && isStationAvailable == false && (
                         <div className={`text-5xl font-bold bg-gray-500 text-white text-center p-20 rounded-2xl`}>
                             Device Checked <br />
                             But Station is use by another user. Please wait
@@ -214,6 +213,8 @@ const NewSession = () => {
                             </button>
                         )}
 
+                        
+
 
                     </form>
                 </>
@@ -230,19 +231,19 @@ const NewSession = () => {
                         <div className="bg-white p-4 rounded min-h-36 flex flex-col justify-evenly items-center gap-y-4">
                             <FaBolt className='text-5xl bg-[#AFAFAF]/20 rounded-full p-2 text-blue-500' />
                             <h1 className='font-bold text-lg'>Energy</h1>
-                            <strong>{(telemetryData.voltage *  telemetryData.current).toFixed(2) || 0} kWh</strong>
+                            <strong>{(30).toFixed(2) || 0} kWh</strong>
 
                         </div>
                         <div className="bg-white p-4 rounded min-h-36 flex flex-col justify-evenly items-center gap-y-4">
                             <FaThermometerHalf className='text-5xl  bg-[#AFAFAF]/20 rounded-full p-2 text-blue-500' />
                             <h1 className='font-bold text-lg'>Temprature</h1>
-                            <strong>{telemetryData.temperature || 0 }°C</strong>
+                            <strong>{34 || 0}°C</strong>
                         </div>
 
                         <div className="bg-white p-4 rounded min-h-36 flex flex-col justify-evenly items-center gap-y-4">
                             <FaClock className='text-5xl  bg-[#AFAFAF]/20 rounded-full p-2 text-blue-500' />
                             <h1 className='font-bold text-lg'>Time Taken</h1>
-                            <strong>{formatTimeFromString(time)}</strong>
+                            <strong>{formatTimeFromTotalSeconds(time)}</strong>
 
                         </div>
 
@@ -268,11 +269,11 @@ const NewSession = () => {
                     <p className="text-gray-600 mb-4">Here are the billing details for your charging session.</p>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-gray-700">
-                        <div><strong>User:</strong> {accessData.username || "defaultuser"}</div>
+                        <div><strong>User:</strong> {authData.username || "defaultuser"}</div>
                         {/* <div><strong>Max Budget:</strong> {maxBudget} PKR</div> */}
                         <div><strong>Energy Consumed:</strong> 30 kWh</div>
-                        <div><strong>Temperature:</strong> {telemetryData.temperature}°C</div>
-                        <div><strong>Time Taken:</strong> {formatTimeFromString(time)}</div>
+                        <div><strong>Temperature:</strong> {34}°C</div>
+                        <div><strong>Time Taken:</strong> {formatTimeFromTotalSeconds(time)}</div>
                         <div><strong>Total Cost:</strong> {cost} PKR</div>
                     </div>
 

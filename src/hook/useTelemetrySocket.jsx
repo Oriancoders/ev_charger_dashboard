@@ -10,6 +10,8 @@ const useTelemetrySocket = (deviceId, token) => {
     if (!deviceId || !token) return;
 
     const socket = new SockJS(`https://evbackend-gayt.onrender.com/ws?token=${encodeURIComponent(token)}`);
+    // const socket = new SockJS(`https://localhost:8080/ws?token=${encodeURIComponent(token)}`);
+
 
 
     const client = new Client({
