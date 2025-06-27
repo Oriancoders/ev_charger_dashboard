@@ -5,26 +5,26 @@ import ApiService from "../../ApiServices/ApiService";
 
 //importing icons 
 import { FaBolt } from 'react-icons/fa'; // For the lightning icon (top-left)
-import { FaUserShield } from 'react-icons/fa'; // For the "Admin" button
 import { FaMapMarkerAlt } from 'react-icons/fa'; // For location
 import { FaCircle } from 'react-icons/fa'; // For status dot
 import { FaClock } from 'react-icons/fa'; // For "Last Updated" timestamp
-import { FaPowerOff } from 'react-icons/fa'; // For power toggle icon (if needed)
-import { FaBatteryQuarter } from 'react-icons/fa'; // For battery or recommendations
-import { FaSatelliteDish } from 'react-icons/fa'; // For live data or signal
+
 import { FaServer } from 'react-icons/fa'; // For device info
 
 const ChargerControlPanel = () => {
-  const { isOn, setIsOn, authData, formatTimeFromString } = useGlobalContext();
+  const { authData, formatTimeFromString } = useGlobalContext();
 
   const [deviceData, setDeviceData] = useState(null);
+  const [isOn, setIsOn] = useState(null);
+  const [switching, setSwitching] = useState(true)
+
 
   // fech deviceId from URL params or context
+
   useEffect(() => {
     const fetchDevice = async () => {
       try {
         const data = await ApiService.getDevices('DEVICE123', authData.accessToken);
-        console.log("the aisi ki tesi wala daata live ", data)
         setDeviceData(data);
       } catch (error) {
         console.error("Error fetching device:asdasda", error);
@@ -34,16 +34,17 @@ const ChargerControlPanel = () => {
     fetchDevice();
   }, [isOn]);
 
+  useEffect(() => {
+    CheckDeviceInService();
 
-
+  } , [])
 
 
 
   const toggleSwitch = async () => {
-    console.log("yai jara hai status update ki api mai : ", authData.accessToken, !isOn)
     try {
       const data = await ApiService.setDeviceStatus(authData.accessToken, !isOn);
-      setIsOn(!isOn)
+      setIsOn(data.available)
       console.log("switch chalra hai ", data)
     } catch {
       alert("Switch nh  chalra !!!!!!!")
@@ -51,10 +52,24 @@ const ChargerControlPanel = () => {
 
   }
 
+
+  const CheckDeviceInService = async () => {
+    try {
+      const data = await ApiService.isInService(authData.accessToken);
+      if (data.isAvailable) {
+        setIsOn(data.isAvailable)
+
+      } 
+    } catch (error) {
+        alert("error in fetching status of device")
+    }
+  }
+
   const getRecommendation = () => {
     if (!isOn) return "Supply is OFF. No action needed.";
     return "System is operating normally.";
   };
+  
 
   return (
     <div className="sm:px-6 p-3  rounded-xl shadow-lg space-y-3  h-screen overflow-y-scroll">
@@ -66,39 +81,39 @@ const ChargerControlPanel = () => {
       </div>
       <hr />
       {/* details of device  */}
-      
+
 
       <div className="w-full flex justify-between items-start mt-8 px-2">
         <div>
-           <h1 className="text-[24px] font-bold mb-4">Station Details</h1>
-      {
-        deviceData ? (
-          <ul className="text-[16px] mb-4 space-y-3">
-            <li className="flex items-center gap-2">
-              <FaServer className="text-indigo-600" />
-              <strong>Device ID:</strong> {deviceData.deviceId}
-            </li>
-            <li className="flex items-center gap-2">
-              <FaBolt className="text-yellow-500" />
-              <strong>Name Of Station:</strong> {deviceData.name}
-            </li>
-            <li className="flex items-center gap-2">
-              <FaMapMarkerAlt className="text-red-500" />
-              <strong>Location:</strong> {deviceData.location}
-            </li>
-            <li className="flex items-center gap-2">
-              <FaCircle className={deviceData.available ? 'text-green-500' : 'text-gray-400'} />
-              <strong>Status:</strong> {deviceData.available ? 'Available' : 'Unavailable'}
-            </li>
-            <li className="flex items-center gap-2">
-              <FaClock className="text-blue-500" />
-              <strong>Last Updated:</strong> {formatTimeFromString(deviceData.lastUpdated)}
-            </li>
-          </ul>
-        ) : (
-          <p className="text-[14px] text-gray-600">Loading device data...</p>
-        )
-      }
+          <h1 className="text-[24px] font-bold mb-4">Station Details</h1>
+          {
+            deviceData ? (
+              <ul className="text-[16px] mb-4 space-y-3">
+                <li className="flex items-center gap-2">
+                  <FaServer className="text-indigo-600" />
+                  <strong>Device ID:</strong> {deviceData.deviceId}
+                </li>
+                <li className="flex items-center gap-2">
+                  <FaBolt className="text-yellow-500" />
+                  <strong>Name Of Station:</strong> {deviceData.name}
+                </li>
+                <li className="flex items-center gap-2">
+                  <FaMapMarkerAlt className="text-red-500" />
+                  <strong>Location:</strong> {deviceData.location}
+                </li>
+                <li className="flex items-center gap-2">
+                  <FaCircle className={deviceData.available ? 'text-green-500' : 'text-gray-400'} />
+                  <strong>Status:</strong> {deviceData.available ? 'Available' : 'Unavailable'}
+                </li>
+                <li className="flex items-center gap-2">
+                  <FaClock className="text-blue-500" />
+                  <strong>Last Updated:</strong> {formatTimeFromString(deviceData.lastUpdated)}
+                </li>
+              </ul>
+            ) : (
+              <p className="text-[14px] text-gray-600">Loading device data...</p>
+            )
+          }
         </div>
 
         {/* Capsule Switch */}
@@ -116,7 +131,7 @@ const ChargerControlPanel = () => {
 
 
       {/* Live Data Display */}
-      <LiveDataPanel  />
+      <LiveDataPanel />
 
       {/* Recommendations */}
       <div className="mt-4 p-4 bg-white shadow-md rounded-lg border border-gray-200">
