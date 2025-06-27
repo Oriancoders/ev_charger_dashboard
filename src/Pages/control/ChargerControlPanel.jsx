@@ -104,11 +104,11 @@ const ChargerControlPanel = () => {
         {/* Capsule Switch */}
         <div
           onClick={() => toggleSwitch()}
-          className={`w-20 h-10 flex items-center rounded-full cursor-pointer p-1 transition-colors duration-300 ${isOn ? "bg-green-500" : "bg-red-500"
+          className={`lg:w-20 lg:h-10 sm:w-14 sm:h-6 w-12 h-5 flex items-center rounded-full cursor-pointer p-1 transition-colors duration-300 ${isOn ? "bg-green-500" : "bg-red-500"
             }`}
         >
           <div
-            className={`w-8 h-8 bg-white rounded-full shadow-md transform transition-transform duration-300 ${isOn ? "translate-x-10" : "translate-x-0"
+            className={`lg:w-8 lg:h-8 sm:w-4 sm:h-4 w-3 h-3 bg-white rounded-full shadow-md transform transition-transform duration-300 ${isOn ? "lg:translate-x-10 sm:translate-x-8 translate-x-7" : "translate-x-0"
               }`}
           />
         </div>

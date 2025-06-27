@@ -23,27 +23,51 @@ const NewSession = () => {
     const [isDeviceConnected, setIsDeviceConnected] = useState(true); // true by default
     const [sessionStarted, setSessionStarted] = useState(false);
     const [sessionEnded, setSessionEnded] = useState(false);
-    const [IsAvailable , setIsAvailable] = useState(null)
+    const [status, setstatus] = useState("checking")
+    const [isDeviceAvailable, setIsDeviceAvailable] = useState(null)
+    const [isStationAvailable, setIsStationAvailable] = useState(null)
+
 
     const [energy, setEnergy] = useState(0);
     const [temperature, setTemperature] = useState(30);
     const [cost, setCost] = useState(0);
     const [time, setTime] = useState(0);
 
-    
+
     const checkStationAvailable = async () => {
-        try{
+        try {
             const data = await ApiService.isCurrentlyCharging(authData.accessToken);
-            console.log("data hai avaialable ka " ,data)
-            setIsAvailable(data.isAvailable)
-        }catch (error){
-            console.log("nh aya data " , error)
+            console.log("data hai avaialable ka ", data)
+            if (data.isAvailable) {
+                setIsStationAvailable(true)
+                setstatus("allChecked")
+            } else {
+                setIsStationAvailable(false)
+                setstatus("stationBusy")
+            }
+        } catch (error) {
+            console.log("nh aya data ", error)
         }
     }
-    useEffect(() => {
-        checkStationAvailable()
-        console.log("hai available ? : " , IsAvailable)
-    } , [sessionStarted ,IsAvailable])
+
+    const CheckDeviceInService = async () => {
+        try {
+            const data = await ApiService.isInService(authData.accessToken);
+            if (data.isAvailable) {
+                setIsDeviceAvailable(true)
+                setstatus("checkingStation")
+                checkStationAvailable()
+
+            } else {
+                setIsDeviceAvailable(false)
+                setIsStationAvailable(false)
+
+            }
+        } catch (error) {
+            console.log("nh aya data device cheeck karnay hka ", error)
+        }
+    }
+
 
     useEffect(() => {
         let interval;
@@ -76,7 +100,7 @@ const NewSession = () => {
             setSessionStarted(true)
         } catch (error) {
             alert("nh hua startt", error)
-            setIsAvailable(false)
+            setstatus(false)
         }
     };
 
@@ -93,7 +117,12 @@ const NewSession = () => {
 
     };
 
-    
+    useEffect(() => {
+        CheckDeviceInService()
+
+    }, [sessionStarted])
+
+
 
 
     return (
@@ -106,47 +135,79 @@ const NewSession = () => {
             </div>
             {!sessionStarted && !sessionEnded && (
                 <>
-                <h1 className='text-3xl font-bold my-6 text-center'>Welcom to EV Station 01</h1>
+                    <h1 className='text-3xl font-bold my-6 text-center'>Welcom to EV Station 01</h1>
 
-                <div className={`text-5xl font-bold ${IsAvailable ? 'bg-green-500' : 'bg-red-500'} text-white text-center p-20 rounded-2xl`}>
-                    {IsAvailable ? 'Station is currently Free' : 'Station is currently Busy'}
-                </div>
-                 <form className=" p-3 w-full ">
+                    {status == "checking" && (
+                        <div className={`text-5xl font-bold  bg-gray-500 text-white text-center p-20 rounded-2xl `}>
+                            {isDeviceAvailable == null && ' Checking if device is in service....'}
+                            {isDeviceAvailable == true && ' Device is Working '}
+                            {isDeviceAvailable == false && ' Device is under maintainence '}
 
-                    <div className="grid  grid-cols-1 w-full  gap-4 ">
-     
-                        <div className="flex flex-col gap-y-2 col-span-1">
-                            <label className='text-xl italic font-semibold' >Enter Your Max Budget <span className='text-black/50 text-xs'>(Session will automatically stop when budget reached)</span></label>
-                            <input
-                                type="number"
-                                placeholder="Maximum Budget (eg : 40000)"
-                                value={maxBudget}
-                                onChange={(e) => setMaxBudget(e.target.value)}
-                                className=" bg-white shadow text-sm p-2 focus:border-blue-700 border-[1px] w-full border-transparent  rounded outline-none text-[16px]"
-                            />
+                        </div>
+                    )}
+
+                    {status == "checkingStation" && isDeviceAvailable == true && (
+                        <div className={`text-5xl font-bold bg-gray-500 text-white text-center p-20 rounded-2xl`}>
+                            Device Checked <br />
+                            {isStationAvailable == null && ' Checking if station is available ....'}
+                            {isStationAvailable == true && ' Device is Working and station is free to use  '}
+                            {isStationAvailable == false && ' Device is working but station is not free '}
+                        </div>
+                    )}
+
+                    {status == "stationBusy" && isDeviceAvailable == true && isStationAvailable == false(
+                        <div className={`text-5xl font-bold bg-gray-500 text-white text-center p-20 rounded-2xl`}>
+                            Device Checked <br />
+                            But Station is use by another user. Please wait
+                        </div>
+                    )}
+
+                    {status == "allChecked" && (
+                        <div className={`text-5xl font-bold bg-green-500 text-white text-center p-20 rounded-2xl`}>
+                            Device Checked <br />
+                            Station is Free <br />
+                            Now you can use it
+                        </div>
+                    )}
+                    <form className=" p-3 w-full ">
+
+                        <div className="grid  grid-cols-1 w-full  gap-4 ">
+
+                            <div className="flex flex-col gap-y-2 col-span-1">
+                                <label className='text-xl italic font-semibold' >Enter Your Max Budget <span className='text-black/50 text-xs'>(Session will automatically stop when budget reached)</span></label>
+                                <input
+                                    type="number"
+                                    placeholder="Maximum Budget (eg : 40000)"
+                                    value={maxBudget}
+                                    onChange={(e) => setMaxBudget(e.target.value)}
+                                    className=" bg-white shadow text-sm p-2 focus:border-blue-700 border-[1px] w-full border-transparent  rounded outline-none text-[16px]"
+                                />
+                            </div>
+
+
                         </div>
 
-                        
-                    </div>
+                        <div
+                            className={`mt-4 p-4 text-white rounded flex items-center justify-between ${isDeviceConnected ? 'bg-green-500' : 'bg-red-500'
+                                }`}
+                        >
+                            <span className='text-xl font-semibold'>Vehicle {isDeviceConnected ? 'Connected' : 'Not Connected'}</span>
+                            <span className={`text-2xl mainBlue bg-white p-2 rounded-full fromBlue`}><FaPlug /></span>
+                        </div>
 
-                    <div
-                        className={`mt-4 p-4 text-white rounded flex items-center justify-between ${isDeviceConnected ? 'bg-green-500' : 'bg-red-500'
-                            }`}
-                    >
-                        <span className='text-xl font-semibold'>Vehicle {isDeviceConnected ? 'Connected' : 'Not Connected'}</span>
-                        <span className={`text-2xl mainBlue bg-white p-2 rounded-full fromBlue`}><FaPlug /></span>
-                    </div>
+                        {isDeviceAvailable && isStationAvailable && (
+                            <button
+                                type="button"
+                                onClick={handleStart}
+                                disabled={!(isStationAvailable && isDeviceAvailable)}
+                                className={`mt-6 w-full p-3 rounded text-white font-semibold transition bg-green-600 hover:bg-green-700  `}
+                            >
+                                Start Session
+                            </button>
+                        )}
 
-                    <button
-                        type="button"
-                        onClick={handleStart}
-                        className={`mt-6 w-full p-3 rounded text-white font-semibold transition bg-green-600 hover:bg-green-700  `}
-                    >
-                        Start Session
-                    </button>
 
-                    
-                </form>
+                    </form>
                 </>
             )}
 

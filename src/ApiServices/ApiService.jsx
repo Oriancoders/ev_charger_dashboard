@@ -117,9 +117,18 @@ export default class ApiService {
   }
 
   static async isCurrentlyCharging(token) {
-    const response = await axios.get(`${this.BASE_URL}/sessions/isAvailable?deviceId=DEVICE123`, {
+    const response = await axios.get(`${this.BASE_URL}/sessions/isInUse?deviceId=DEVICE123`, {
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  }
+
+  static async isInService(token) {
+    const response = await axios.get(`${this.BASE_URL}/sessions/isInService?deviceId=DEVICE123`, {
+      headers: {
         Authorization: `Bearer ${token}`,
       },
     });

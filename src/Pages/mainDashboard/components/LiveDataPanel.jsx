@@ -19,7 +19,7 @@ const LiveDataPanel = ({ data}) => {
 
 
   return (
-    <div className="bg-white p-6 rounded-xl shadow-md">
+    <div className="bg-white p-3 rounded-xl shadow-md">
       <h2 className="text-lg font-bold text-[#1E1E2F] mb-4 italic">
         Current Live Data Supply
       </h2>
@@ -61,7 +61,7 @@ const LiveDataPanel = ({ data}) => {
         />
       </div>
        ) : ( 
-        <h1 className="text-3xl font-bold">fetching live data ......... </h1>
+        <h1 className="text-xl font-semibold text-black/50">fetching live data ......... </h1>
        )}
     </div>
   );
