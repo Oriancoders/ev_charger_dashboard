@@ -16,7 +16,8 @@ const ChargerControlPanel = () => {
 
   const [deviceData, setDeviceData] = useState(null);
   const [isOn, setIsOn] = useState(null);
-  const [switching, setSwitching] = useState(true)
+  const [switching, setSwitching] = useState(false)
+  const [isSessionRunning, setIsSessionRunning] = useState(false)
 
 
   // fech deviceId from URL params or context
@@ -37,18 +38,26 @@ const ChargerControlPanel = () => {
   useEffect(() => {
     CheckDeviceInService();
 
-  } , [])
+  }, [])
 
 
 
   const toggleSwitch = async () => {
-    try {
-      const data = await ApiService.setDeviceStatus(authData.accessToken, !isOn);
-      setIsOn(data.available)
-      console.log("switch chalra hai ", data)
-    } catch {
-      alert("Switch nh  chalra !!!!!!!")
+    if (!switching) {
+      setSwitching(true)
+      try {
+        const data = await ApiService.setDeviceStatus(authData.accessToken, !isOn);
+        setIsOn(data.available)
+        console.log("switch chalra hai ", data, switching)
+        setSwitching(false)
+      } catch {
+        alert("Switch nh  chalra !!!!!!!")
+        setSwitching(false)
+      }
+    }else{
+      alert("switching/.........")
     }
+
 
   }
 
@@ -59,9 +68,9 @@ const ChargerControlPanel = () => {
       if (data.isAvailable) {
         setIsOn(data.isAvailable)
 
-      } 
+      }
     } catch (error) {
-        alert("error in fetching status of device")
+      alert("error in fetching status of device")
     }
   }
 
@@ -69,14 +78,26 @@ const ChargerControlPanel = () => {
     if (!isOn) return "Supply is OFF. No action needed.";
     return "System is operating normally.";
   };
-  
+
+  const handleStop = async () => {
+
+    try {
+      const data = await ApiService.stopSession(authData.accessToken)
+      console.log("data jo stop honai kai baad session par ara : ", data)
+
+    } catch (error) {
+      console.log("nh hua stop", error)
+    }
+
+  };
+
 
   return (
     <div className="sm:px-6 p-3  rounded-xl shadow-lg space-y-3  h-screen overflow-y-scroll">
 
       <div className="w-full flex justify-between items-center  font-bold   px-3">
         <FaBolt className="md:text-2xl text-xl" />
-        <h2 className="md:text-[24px] sm:text-lg text-sm font-bold  text-[#1E1E2F] italic">Controm Panel</h2>
+        <h2 className="md:text-[24px] sm:text-lg text-sm font-bold  text-[#1E1E2F] italic">Control Panel</h2>
         <h1 className="bg-[#1E1E2F] rounded-sm px-3 py-2 text-white sm:text-sm text-xs">ADMIN</h1>
       </div>
       <hr />
@@ -117,16 +138,16 @@ const ChargerControlPanel = () => {
         </div>
 
         {/* Capsule Switch */}
-        <div
+        <button
+          // disabled
           onClick={() => toggleSwitch()}
-          className={`lg:w-20 lg:h-10 sm:w-14 sm:h-6 w-12 h-5 flex items-center rounded-full cursor-pointer p-1 transition-colors duration-300 ${isOn ? "bg-green-500" : "bg-red-500"
-            }`}
+          className={`lg:w-20 lg:h-10 sm:w-14 sm:h-6 w-12 h-5 flex items-center rounded-full cursor-pointer p-1 transition-colors ${switching && 'bg-gray-500 disabled'} duration-300 ${isOn && !switching && 'bg-green-500'} ${!isOn && !switching && 'bg-red-500'}  `}
         >
           <div
             className={`lg:w-8 lg:h-8 sm:w-4 sm:h-4 w-3 h-3 bg-white rounded-full shadow-md transform transition-transform duration-300 ${isOn ? "lg:translate-x-10 sm:translate-x-8 translate-x-7" : "translate-x-0"
               }`}
           />
-        </div>
+        </button>
       </div>
 
 
@@ -139,6 +160,8 @@ const ChargerControlPanel = () => {
         <h1 className="font-semibold   text-[18px] mt-4">Recommendations</h1>
         <p className="text-[14px] text-gray-600 italic">{getRecommendation()}</p>
       </div>
+
+
     </div>
   );
 };

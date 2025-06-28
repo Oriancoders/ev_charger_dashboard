@@ -53,11 +53,18 @@ const Sidebar = () => {
 
   }
 
+  const handleNavBar = (item) => {
+    setActiveItem(item)
+    if(scrwidth < 765){
+      setIsSideBarOpen(false)
+    }
+  }
+
   return (
     <div style={{ transform: isSideBarOpen ? 'translateX(0%)' : 'translateX(-100%)', }} className="md:w-64 h-screen   bg-[#F4F6F8] shadow-md flex flex-col justify-between md:relative absolute transition-all ease-in-out">
 
       {scrwidth < 765 && (
-        <div onClick={() => setIsSideBarOpen(!isSideBarOpen)} className="absolute text-xl py-16 px-2 rounded-r-2xl bg-linear-to-r from-[#0A86F0] to-[#3870AB] text-white right-0 top-1/2 -translate-y-1/2 translate-x-full transition-all "><RxDoubleArrowLeft style={{ transform: isSideBarOpen ? 'rotate(0deg)' : 'rotate(180deg)' }} /></div>
+        <div onClick={() => setIsSideBarOpen(!isSideBarOpen)} className="absolute sm:text-xl text-sm sm:py-16 py-8 sm:px-2 px-1 rounded-r-2xl bg-linear-to-r from-[#0A86F0] to-[#3870AB] text-white right-0 top-1/2 -translate-y-1/2 translate-x-full transition-all "><RxDoubleArrowLeft style={{ transform: isSideBarOpen ? 'rotate(0deg)' : 'rotate(180deg)' }} /></div>
       )}
       <div>
 
@@ -71,7 +78,7 @@ const Sidebar = () => {
                 icon={item.icon}
                 label={item.label}
                 active={activeItem === item.label}
-                onClick={() => setActiveItem(item.label)}
+                onClick={() => handleNavBar(item.label)}
               />
             ))}
           </nav>
@@ -83,7 +90,7 @@ const Sidebar = () => {
                 icon={item.icon}
                 label={item.label}
                 active={activeItem === item.label}
-                onClick={() => setActiveItem(item.label)}
+                onClick={() => handleNavBar(item.label)}
               />
             ))}
           </nav>

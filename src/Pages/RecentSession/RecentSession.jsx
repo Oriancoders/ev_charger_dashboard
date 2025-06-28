@@ -2,11 +2,16 @@ import { FaClock } from "react-icons/fa";
 import { useGlobalContext } from "../../GlobalStates/GlobalState";
 // import sessions from "../../MockData/MockData.json";
 import { format, parseISO } from "date-fns";
+import { useEffect, useState } from "react";
 
 const RecentSession = () => {
   const {ROLE, authData , sessions , formatTimeFromString} = useGlobalContext()
-
-  const session = sessions[sessions.length - 1]; // latest session at top
+  const [session ,setSession] = useState(null)
+  useEffect(() => {
+    if(sessions){
+      setSession(sessions[sessions.length - 1]) // latest session at top
+    }
+  })
 
   return (
     <div className="sm:p-6 p-3 bg-[#F4F6F8] min-h-screen overflow-y-scroll">
@@ -20,9 +25,8 @@ const RecentSession = () => {
 
         <hr />
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2  gap-4 my-4">
-
-        
+      {session ? (
+        <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2  gap-4 my-4">
 
         {/* Start Time */}
         <InfoBox
@@ -49,7 +53,9 @@ const RecentSession = () => {
         {/* Serial */}
         <InfoBox label="About/Serial" value={session.serial} color="text-sky-600" />
 
-      </div>
+      </div>) : (
+        <div className="w-full text-center py-6 text-xl ">You currently have zero sessions</div>
+      )}
     </div>
   );
 };

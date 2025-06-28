@@ -15,7 +15,7 @@ import ApiService from '../../ApiServices/ApiService';
 import useTelemetrySocket from '../../hook/useTelemetrySocket';
 
 const NewSession = () => {
-    const { formatTimeFromString, authData , formatTimeFromTotalSeconds  } = useGlobalContext()
+    const { formatTimeFromString, authData, formatTimeFromTotalSeconds } = useGlobalContext()
     const [sessionName, setSessionName] = useState('');
     const [vehicleName, setVehicleName] = useState('');
     const [portType, setPortType] = useState('');
@@ -76,9 +76,9 @@ const NewSession = () => {
         let interval;
         if (sessionStarted && !sessionEnded) {
             interval = setInterval(() => {
-                
+
                 setCost((prevCost) => {
-                    const newCost = +(prevCost + 1 ).toFixed(0);
+                    const newCost = +(prevCost + 1).toFixed(0);
 
                     // Auto-stop session if budget reached
                     if (Number(maxBudget) > 0 && newCost >= Number(maxBudget)) {
@@ -142,10 +142,10 @@ const NewSession = () => {
             </div>
             {!sessionStarted && !sessionEnded && (
                 <>
-                    <h1 className='text-3xl font-bold my-6 text-center'>Welcom to EV Station 01</h1>
+                    <h1 className='md:text-3xl sm:text-lg text-[16px] font-bold my-6 text-center'>Welcom to EV Station 01</h1>
 
                     {status == "checking" && (
-                        <div className={`text-5xl font-bold  bg-gray-500 text-white text-center p-20 rounded-2xl `}>
+                        <div className={`lg:text-5xl md:text-3xl sm:text-xl text-lg font-bold  bg-gray-500 text-white text-center md:p-20 sm:p-10 p-4 rounded-2xl `}>
                             {isDeviceAvailable == null && ' Checking if device is in service....'}
                             {isDeviceAvailable == true && ' Device is Working '}
                             {isDeviceAvailable == false && ' Device is under maintainence '}
@@ -154,7 +154,7 @@ const NewSession = () => {
                     )}
 
                     {status == "checkingStation" && isDeviceAvailable == true && (
-                        <div className={`text-5xl font-bold bg-gray-500 text-white text-center p-20 rounded-2xl`}>
+                        <div className={`lg:text-5xl md:text-3xl sm:text-xl text-lg font-bold bg-gray-500 text-white text-center md:p-20 sm:p-10 p-4 rounded-2xl`}>
                             Device Checked <br />
                             {isStationAvailable == null && ' Checking if station is available ....'}
                             {isStationAvailable == true && ' Device is Working and station is free to use  '}
@@ -163,31 +163,31 @@ const NewSession = () => {
                     )}
 
                     {status == "stationBusy" && isDeviceAvailable == true && isStationAvailable == false && (
-                        <div className={`text-5xl font-bold bg-gray-500 text-white text-center p-20 rounded-2xl`}>
+                        <div className={`lg:text-5xl md:text-3xl sm:text-xl text-lg font-bold bg-gray-500 text-white text-center md:p-20 sm:p-10 p-4 rounded-2xl`}>
                             Device Checked <br />
                             But Station is use by another user. Please wait
                         </div>
                     )}
 
                     {status == "allChecked" && (
-                        <div className={`text-5xl font-bold bg-green-500 text-white text-center p-20 rounded-2xl`}>
+                        <div className={`lg:text-5xl md:text-3xl sm:text-xl text-lg font-bold bg-green-500 text-white text-center md:p-20 sm:p-10 p-4 rounded-2xl`}>
                             Device Checked <br />
                             Station is Free <br />
                             Now you can use it
                         </div>
                     )}
-                    <form className=" p-3 w-full ">
+                    <form className=" sm:p-3 w-full ">
 
                         <div className="grid  grid-cols-1 w-full  gap-4 ">
 
-                            <div className="flex flex-col gap-y-2 col-span-1">
-                                <label className='text-xl italic font-semibold' >Enter Your Max Budget <span className='text-black/50 text-xs'>(Session will automatically stop when budget reached)</span></label>
+                            <div className="flex flex-col gap-y-2 col-span-1 mt-4">
+                                <label className='md:text-xl sm:text-lg text-sm italic font-semibold' >Enter Your Max Budget <span className='text-black/50 text-xs'>(Session will automatically stop when budget reached)</span></label>
                                 <input
                                     type="number"
                                     placeholder="Maximum Budget (eg : 40000)"
                                     value={maxBudget}
                                     onChange={(e) => setMaxBudget(e.target.value)}
-                                    className=" bg-white shadow text-sm p-2 focus:border-blue-700 border-[1px] w-full border-transparent  rounded outline-none text-[16px]"
+                                    className=" bg-white shadow text-xs p-2 focus:border-blue-700 border-[1px] w-full border-transparent  rounded outline-none "
                                 />
                             </div>
 
@@ -207,7 +207,7 @@ const NewSession = () => {
                                 type="button"
                                 onClick={handleStart}
                                 disabled={!(isStationAvailable && isDeviceAvailable)}
-                                className={`mt-6 w-full p-3 rounded text-white font-semibold transition bg-green-600 hover:bg-green-700  `}
+                                className={`mt-4 w-full p-3 rounded text-white font-semibold transition bg-green-600 hover:bg-green-700  `}
                             >
                                 Start Session
                             </button>
@@ -216,41 +216,43 @@ const NewSession = () => {
                         
 
 
+
+
                     </form>
                 </>
             )}
 
             {sessionStarted && !sessionEnded && (
-                <div className=" p-4  ">
-                    <h2 className="text-2xl font-semibold mb-4">Charging Session</h2>
+                <div className=" sm:p-4 p-2  ">
+                    <h2 className="sm:text-2xl text-lg font-semibold mb-4">Charging Session</h2>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                        <div className="shadow p-2 bg-white rounded">Max Budget: <strong>{maxBudget}</strong> PKR</div>
+                        <div className="shadow p-2 bg-white rounded text-sm">Max Budget: <strong>{maxBudget}</strong> PKR</div>
                     </div>
 
                     <div className="grid grid-cols-2 gap-4 text-center mb-6">
                         <div className="bg-white p-4 rounded min-h-36 flex flex-col justify-evenly items-center gap-y-4">
-                            <FaBolt className='text-5xl bg-[#AFAFAF]/20 rounded-full p-2 text-blue-500' />
-                            <h1 className='font-bold text-lg'>Energy</h1>
-                            <strong>{(30).toFixed(2) || 0} kWh</strong>
+                            <FaBolt className='md:text-5xl sm:text-3xl text-2xl sm:bg-[#AFAFAF]/20 rounded-full sm:p-2 text-blue-500' />
+                            <h1 className='font-bold sm:text-lg text-sm'>Energy</h1>
+                            <strong className='lg:text-sm text-xs'>{(30).toFixed(2) || 0} kWh</strong>
 
                         </div>
                         <div className="bg-white p-4 rounded min-h-36 flex flex-col justify-evenly items-center gap-y-4">
-                            <FaThermometerHalf className='text-5xl  bg-[#AFAFAF]/20 rounded-full p-2 text-blue-500' />
-                            <h1 className='font-bold text-lg'>Temprature</h1>
-                            <strong>{34 || 0}°C</strong>
+                            <FaThermometerHalf className='md:text-5xl sm:text-3xl text-2xl sm:bg-[#AFAFAF]/20 rounded-full sm:p-2 text-blue-500' />
+                            <h1 className='font-bold sm:text-lg text-sm'>Temprature</h1>
+                            <strong className='lg:text-sm text-xs'>{34 || 0}°C</strong>
                         </div>
 
                         <div className="bg-white p-4 rounded min-h-36 flex flex-col justify-evenly items-center gap-y-4">
-                            <FaClock className='text-5xl  bg-[#AFAFAF]/20 rounded-full p-2 text-blue-500' />
-                            <h1 className='font-bold text-lg'>Time Taken</h1>
-                            <strong>{formatTimeFromTotalSeconds(time)}</strong>
+                            <FaClock className='md:text-5xl sm:text-3xl text-2xl sm:bg-[#AFAFAF]/20 rounded-full sm:p-2 text-blue-500' />
+                            <h1 className='font-bold sm:text-lg text-sm'>Time Taken</h1>
+                            <strong className='lg:text-sm text-xs'>{formatTimeFromTotalSeconds(time)}</strong>
 
                         </div>
 
                         <div className="bg-white p-4 rounded min-h-36 flex flex-col justify-evenly items-center gap-y-4">
-                            <FaMoneyBill className='text-5xl  bg-[#AFAFAF]/20 rounded-full p-2 text-blue-500' />
-                            <h1 className='font-bold text-lg'>Amount</h1>
-                            <strong >{cost} PKR</strong>
+                            <FaMoneyBill className='md:text-5xl sm:text-3xl text-2xl sm:bg-[#AFAFAF]/20 rounded-full sm:p-2 text-blue-500' />
+                            <h1 className='font-bold sm:text-lg text-sm'>Amount</h1>
+                            <strong className='lg:text-sm text-xs'>{cost} PKR</strong>
                         </div>
                     </div>
 

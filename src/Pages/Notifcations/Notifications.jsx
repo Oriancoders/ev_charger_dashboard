@@ -30,16 +30,16 @@ const Notifications = () => {
                 {notifications.map((notification, idx) => (
                     <div
                         key={idx}
-                        className="flex  text-sm justify-between gap-6 items-center bg-white notification rounded-xl px-4 py-2 transition-all "
+                        className="flex sm:flex-row flex-col  text-sm justify-between sm:gap-6 gap-3 sm:items-center bg-white notification rounded-xl sm:px-4 sm:py-2 p-2 transition-all "
                     >
-                        <div className="sm:w-40 w-20 italic font-semibold flex items-center justify-between gap-2  ">
+                        <div className="sm:w-40 w-full  italic font-semibold flex items-center justify-between gap-2  ">
                         <h1 className="">{notification.type}</h1> 
-                        {iconMap[notification.type]}
+                        <div className="flex-1 ">{iconMap[notification.type]}</div>
                         </div>
-                        <h1 className="flex-1 text-sm">
+                        <h1 className="flex-1 sm:text-sm text-xs">
                             {notification.message}
                         </h1>
-                        <div className="text-right  whitespace-nowrap">
+                        <div className="sm:text-right  whitespace-nowrap">
                             <div className="text-md font-semibold">{format(new Date(notification.timestamp), "h:mm a")}</div>
                             <div className="sm:text-sm text-xs">{format(new Date(notification.timestamp), "dd/MMM/yyyy")}</div>
                         </div>

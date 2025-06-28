@@ -16,7 +16,6 @@ export const GlobalProvider = ({ children }) => {
 
     const [scrwidth, setWidth] = useState(window.innerWidth);
     const [activeItem, setActiveItem] = useState("Main Dashboard")
-    const [isOn, setIsOn] = useState(true);
     const [isLoggedIn, setIsLoggedIn] = useState(false)
     const [authType, setAuthType] = useState("Login")
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -93,7 +92,6 @@ export const GlobalProvider = ({ children }) => {
 
             scrwidth,
             activeItem, setActiveItem,
-            isOn, setIsOn,
             isLoggedIn, setIsLoggedIn,
             authType, setAuthType,
             isAuthenticated, setIsAuthenticated,
