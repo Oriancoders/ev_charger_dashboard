@@ -1,13 +1,13 @@
-import React, { Suspense, lazy, useEffect, useState } from 'react';
-import './App.css';
-import { useGlobalContext } from './GlobalStates/GlobalState';
-import { Route, Routes } from 'react-router-dom';
-import DashboardSkeleton from './Skeletons/DahboardSkeleton';
-import ApiService from './ApiServices/ApiService';
+import React, { Suspense, lazy, useEffect, useState } from "react";
+import "./App.css";
+import { useGlobalContext } from "./GlobalStates/GlobalState";
+import { Route, Routes, Navigate } from "react-router-dom";
+import DashboardSkeleton from "./Skeletons/DahboardSkeleton";
+import Landing_page from "./Landing_page";
 
 // Lazy-loaded pages
-const Login = lazy(() => import('./Pages/Login'));
-const MainLayout = lazy(() => import('./Pages/MainLayout'));
+const Login = lazy(() => import("./Pages/Login"));
+const MainLayout = lazy(() => import("./Pages/MainLayout"));
 
 // General fallback for login
 const GenericSkeleton = () => (
@@ -22,34 +22,14 @@ const GenericSkeleton = () => (
 );
 
 function App() {
-  const { isAuthenticated, authData, setAuthData, setIsAuthenticated } = useGlobalContext();
-  const [authLoading, setAuthLoading] = useState(true); // 🆕
+  const { isAuthenticated } = useGlobalContext();
+  const [authLoading, setAuthLoading] = useState(true);
 
+  // ✅ GlobalState already restores auth from localStorage.
+  // Just wait one tick so UI doesn't flicker.
   useEffect(() => {
-    const getToken = async () => {
-      try {
-        const response = await ApiService.accessTokenFromRefreshToken();
-        if (response.statusCodeValue === 200) {
-        setAuthData({
-            id: response.body.id,
-            username: response.body.username,
-            email: response.body.email,
-            role: response.body.role,
-            accessToken: response.body.accessToken
-          });
-        console.log( "ye agaya data refresh kai baad " ,authData )
-        console.log ("reponse ..." , response)
-
-        setIsAuthenticated(true);
-        }
-      } catch {
-        setIsAuthenticated(false);
-      } finally {
-        setAuthLoading(false); // ✅ auth check done
-      }
-    };
-
-    getToken();
+    const t = setTimeout(() => setAuthLoading(false), 100);
+    return () => clearTimeout(t);
   }, []);
 
   if (authLoading) {
@@ -63,12 +43,13 @@ function App() {
   return (
     <div className="overflow-x-hidden scrollbar-hidden text-[#1E1E2F]">
       <Routes>
+        {/* Root */}
         <Route
           path="/"
           element={
             !isAuthenticated ? (
               <Suspense fallback={<GenericSkeleton />}>
-                <Login />
+                <Landing_page/>
               </Suspense>
             ) : (
               <Suspense fallback={<DashboardSkeleton />}>
@@ -77,6 +58,8 @@ function App() {
             )
           }
         />
+
+        {/* Protected routes */}
         <Route
           path="/main-dashboard"
           element={
@@ -85,16 +68,16 @@ function App() {
                 <MainLayout />
               </Suspense>
             ) : (
-              <Suspense fallback={<GenericSkeleton />}>
-                <Login />
-              </Suspense>
+              <Navigate to="/" replace />
             )
           }
         />
+
+        {/* Optional: catch-all */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </div>
   );
 }
-
 
 export default App;

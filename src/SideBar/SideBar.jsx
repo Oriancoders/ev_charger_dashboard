@@ -35,23 +35,10 @@ const menuItems = {
   ;
 
 const Sidebar = () => {
-  const { activeItem, setActiveItem, setIsAuthenticated, isAuthenticated, scrwidth, authData } = useGlobalContext()
+  const { activeItem, handleActiveItem, isSideBarOpen, setIsSideBarOpen, scrwidth, authData ,logout} = useGlobalContext()
   const navigate = useNavigate()
-  const [isSideBarOpen, setIsSideBarOpen] = useState(true)
 
-  const logout = async () => {
-
-    try {
-      ApiService.logout()
-      console.log("logout hogaya hau ")
-      setIsAuthenticated(false)
-
-      navigate("/")
-    } catch {
-      console.log("logout nh hua ")
-    }
-
-  }
+  
 
   return (
     <div style={{ transform: isSideBarOpen ? 'translateX(0%)' : 'translateX(-100%)', }} className="md:w-64 h-screen   bg-[#F4F6F8] shadow-md flex flex-col justify-between md:relative absolute transition-all ease-in-out">
@@ -71,7 +58,7 @@ const Sidebar = () => {
                 icon={item.icon}
                 label={item.label}
                 active={activeItem === item.label}
-                onClick={() => setActiveItem(item.label)}
+                onClick={() => handleActiveItem(item.label)}
               />
             ))}
           </nav>
@@ -83,7 +70,7 @@ const Sidebar = () => {
                 icon={item.icon}
                 label={item.label}
                 active={activeItem === item.label}
-                onClick={() => setActiveItem(item.label)}
+                onClick={() => handleActiveItem(item.label)}
               />
             ))}
           </nav>

@@ -14,50 +14,49 @@ import useTelemetrySocket from "../hook/useTelemetrySocket";
 
 const MainLayout = () => {
     const { activeItem, scrwidth , authData , setSessions } = useGlobalContext()
-    const [isSideBarOpen , setIsSideBarOpen] = useState(false)
+    // const [isSideBarOpen , setIsSideBarOpen] = useState(false)
     
-    const telemetryData = useTelemetrySocket("DEVICE123", authData.accessToken);
-    console.log("Telemetry Data:", telemetryData);
-    const fetchSessions = async () => {
-          try {
-            const data = await ApiService.getAllSessions(authData.accessToken);
+    // const telemetryData = useTelemetrySocket("DEVICE123", authData.accessToken);
+    // console.log("Telemetry Data:", telemetryData);
+    // const fetchSessions = async () => {
+    //       try {
+    //         const data = await ApiService.getAllSessions(authData.accessToken);
     
-            // Add serials like EV001, EV002, etc.
-            const dataWithSerials = data.map((session, index) => ({
-              ...session,
-              serial: `EV${(index + 1).toString().padStart(3, '0')}` // EV001, EV002...
-            }));
+    //         // Add serials like EV001, EV002, etc.
+    //         const dataWithSerials = data.map((session, index) => ({
+    //           ...session,
+    //           serial: `EV${(index + 1).toString().padStart(3, '0')}` // EV001, EV002...
+    //         }));
     
-            setSessions(dataWithSerials);
-          } catch (error) {
-            console.error("Error fetching device:", error);
-          }
-        };
+    //         setSessions(dataWithSerials);
+    //       } catch (error) {
+    //         console.error("Error fetching device:", error);
+    //       }
+    //     };
     
-        const fetchUserSessions = async () => {
-          try {
-            const data = await ApiService.getUserSessions(authData.accessToken);
+    //     const fetchUserSessions = async () => {
+    //       try {
+    //         const data = await ApiService.getUserSessions(authData.accessToken);
     
-            // Add serials like EV001, EV002, etc.
-            const dataWithSerials = data.map((session, index) => ({
-              ...session,
-              serial: `EV${(index + 1).toString().padStart(3, '0')}` // EV001, EV002...
-            }));
+    //         // Add serials like EV001, EV002, etc.
+    //         const dataWithSerials = data.map((session, index) => ({
+    //           ...session,
+    //           serial: `EV${(index + 1).toString().padStart(3, '0')}` // EV001, EV002...
+    //         }));
     
-            setSessions(dataWithSerials);
-            console.log("user kai sessions fetch hogai hai ", dataWithSerials);
-          } catch (error) {
-            alert("Error fetching device:", error);
-          }
-        };
+    //         setSessions(dataWithSerials);
+    //       } catch (error) {
+    //         alert("Error fetching device:", error);
+    //       }
+    //     };
 
-    useEffect(() => {
-        if (authData.role == "USER") {
-            fetchUserSessions()
-        } else{
-            fetchSessions();
-        }
-      }, []);
+    // useEffect(() => {
+    //     if (authData.role == "USER") {
+    //         fetchUserSessions()
+    //     } else{
+    //         fetchSessions();
+    //     }
+    //   }, []);
     return (
         <div className="flex overflow-hidden">
 
