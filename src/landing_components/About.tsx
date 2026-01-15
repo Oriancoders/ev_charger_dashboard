@@ -65,7 +65,7 @@ export default function About() {
           <div className="relative group">
             <div className="relative overflow-hidden rounded-3xl">
               <img
-                src="https://images.unsplash.com/photo-1617687619235-51b7b42d2c2b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                src="https://images.unsplash.com/photo-1615829386703-e2bb66a7cb7d?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                 alt="EV Charging Station"
                 className="w-full h-[600px] object-cover transform group-hover:scale-105 transition-transform duration-700"
               />
